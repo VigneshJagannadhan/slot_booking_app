@@ -3,7 +3,7 @@ import 'package:slot_booking_app/services/api_service.dart';
 import 'package:slot_booking_app/utils/app_urls.dart';
 
 class AuthDataProvider {
-  Future<dynamic> login({
+  Future<Map<String, dynamic>> login({
     required String email,
     required String password,
   }) async {
@@ -12,13 +12,18 @@ class AuthDataProvider {
         endPoint: AppUrls.login,
         payload: {'email': email, 'password': password},
       );
-      return response.data;
+      return response;
+    } on DioException catch (e) {
+      if (e.response?.data != null) {
+        throw Exception(e.response!.data['message'] ?? 'Login failed');
+      }
+      throw Exception('Network error: ${e.message}');
     } catch (e) {
-      throw e.toString();
+      throw Exception('Login failed: ${e.toString()}');
     }
   }
 
-  Future<dynamic> register({
+  Future<Map<String, dynamic>> register({
     required String email,
     required String password,
     required String name,
@@ -28,11 +33,14 @@ class AuthDataProvider {
         endPoint: AppUrls.register,
         payload: {'email': email, 'password': password, 'name': name},
       );
-      return response.data;
+      return response;
     } on DioException catch (e) {
-      throw e.response?.data['message'] ?? 'An error occurred';
+      if (e.response?.data != null) {
+        throw Exception(e.response!.data['message'] ?? 'Registration failed');
+      }
+      throw Exception('Network error: ${e.message}');
     } catch (e) {
-      throw e.toString();
+      throw Exception('Registration failed: ${e.toString()}');
     }
   }
 }

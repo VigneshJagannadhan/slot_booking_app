@@ -29,68 +29,124 @@ class APIService {
     return {"Authorization": token ?? ""};
   }
 
-  Future getDataFromDio({
+  Future<Map<String, dynamic>> getDataFromDio({
     required String endPoint,
     dynamic payload,
     Map<String, dynamic>? query,
-    bool isRegistration = false,
-    bool isAccessToken = false,
   }) async {
-    String url = AppUrls.baseUrl + endPoint;
-    return await dio.get(
-      url,
-      options: dio_import.Options(headers: createHeaders()),
-      queryParameters: query,
-      data: payload,
-    );
+    try {
+      String url = AppUrls.baseUrl + endPoint;
+      var response = await dio.get(
+        url,
+        options: dio_import.Options(headers: createHeaders()),
+        queryParameters: query,
+        data: payload,
+      );
+
+      if (response.statusCode == 200) {
+        return response.data ?? {};
+      } else {
+        throw dio_import.DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'Request failed with status: ${response.statusCode}',
+        );
+      }
+    } on dio_import.DioException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Network error: ${e.toString()}');
+    }
   }
 
-  Future putDataFromDio({
+  Future<Map<String, dynamic>> putDataFromDio({
     required String endPoint,
     dynamic payload,
     Map<String, dynamic>? query,
-    bool isRegistration = false,
-    bool isAccessToken = false,
   }) async {
-    String url = AppUrls.baseUrl + endPoint;
-    return await dio.put(
-      url,
-      data: payload,
-      options: dio_import.Options(headers: createHeaders()),
-      queryParameters: query,
-    );
+    try {
+      String url = AppUrls.baseUrl + endPoint;
+      var response = await dio.put(
+        url,
+        data: payload,
+        options: dio_import.Options(headers: createHeaders()),
+        queryParameters: query,
+      );
+
+      if (response.statusCode == 200) {
+        return response.data ?? {};
+      } else {
+        throw dio_import.DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'Request failed with status: ${response.statusCode}',
+        );
+      }
+    } on dio_import.DioException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Network error: ${e.toString()}');
+    }
   }
 
-  Future postDataFromDio({
+  Future<Map<String, dynamic>> postDataFromDio({
     required String endPoint,
     dynamic payload,
     Map<String, dynamic>? query,
-    bool isRegistration = false,
-    bool isAccessToken = false,
   }) async {
-    String url = AppUrls.baseUrl + endPoint;
-    return await dio.post(
-      url,
-      data: payload,
-      options: dio_import.Options(headers: createHeaders()),
-      queryParameters: query,
-    );
+    try {
+      String url = AppUrls.baseUrl + endPoint;
+      var response = await dio.post(
+        url,
+        data: payload,
+        options: dio_import.Options(headers: createHeaders()),
+        queryParameters: query,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return response.data ?? {};
+      } else {
+        throw dio_import.DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'Request failed with status: ${response.statusCode}',
+        );
+      }
+    } on dio_import.DioException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Network error: ${e.toString()}');
+    }
   }
 
-  Future deleteDataFromDio({
+  Future<Map<String, dynamic>> deleteDataFromDio({
     required String endPoint,
     dynamic payload,
     Map<String, dynamic>? query,
-    bool isRegistration = false,
-    bool isAccessToken = false,
   }) async {
-    String url = AppUrls.baseUrl + endPoint;
-    return await dio.delete(
-      url,
-      options: dio_import.Options(headers: createHeaders()),
-      queryParameters: query,
-      data: payload,
-    );
+    try {
+      String url = AppUrls.baseUrl + endPoint;
+      var response = await dio.delete(
+        url,
+        options: dio_import.Options(headers: createHeaders()),
+        queryParameters: query,
+        data: payload,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return response.data ?? {};
+      } else {
+        throw dio_import.DioException(
+          requestOptions: response.requestOptions,
+          response: response,
+          message: 'Request failed with status: ${response.statusCode}',
+        );
+      }
+    } on dio_import.DioException {
+      rethrow;
+    } catch (e) {
+      throw Exception('Network error: ${e.toString()}');
+    }
   }
 
   Future getDataDioExternal({
@@ -98,15 +154,19 @@ class APIService {
     dynamic payload,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
-    bool isRegistration = false,
   }) async {
     String url = endPoint;
-    return await dio.get(
+    var response = await dio.get(
       url,
       data: payload,
       options: dio_import.Options(headers: header),
       queryParameters: query,
     );
+    if (response.statusCode == 200) {
+      return response.data ?? {};
+    } else {
+      throw Exception('Failed to get data: ${response.data}');
+    }
   }
 
   Future postDataDioExternal({
@@ -114,20 +174,18 @@ class APIService {
     dynamic payload,
     Map<String, dynamic>? query,
     Map<String, dynamic>? header,
-    bool isRegistration = false,
   }) async {
     String url = endPoint;
-    return await dio.post(
+    var response = await dio.post(
       url,
       data: payload,
       options: dio_import.Options(headers: header),
       queryParameters: query,
     );
+    if (response.statusCode == 200) {
+      return response.data ?? {};
+    } else {
+      throw Exception('Failed to post data: ${response.data}');
+    }
   }
-
-  // Future putDataImage({
-  //   required String presigned,
-  //   dynamic payload,
-  //   bool isRegistration = false,
-  // }) async => await http.put(Uri.parse(presigned), body: payload);
 }

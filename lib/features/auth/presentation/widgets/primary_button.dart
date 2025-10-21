@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/utils/app_styles.dart';
@@ -7,9 +8,11 @@ class PrimaryButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.label,
+    this.isLoading = false,
   });
 
   final String label;
+  final bool isLoading;
   final VoidCallback onPressed;
 
   @override
@@ -26,7 +29,10 @@ class PrimaryButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: Text(label, style: AppStyles.ts16CFFFFFFW600),
+        child:
+            isLoading
+                ? const CupertinoActivityIndicator(color: Colors.white)
+                : Text(label, style: AppStyles.ts16CFFFFFFW600),
       ),
     );
   }

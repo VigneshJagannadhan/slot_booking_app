@@ -1,4 +1,14 @@
 class AppValidators {
+  static String? validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Name is required';
+    }
+    if (!RegExp(r'^[a-zA-Z\s]{3,}$').hasMatch(value)) {
+      return 'Name must be at least 3 characters long and contain only letters and spaces';
+    }
+    return null;
+  }
+
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email is required';

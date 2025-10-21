@@ -18,3 +18,5 @@ class AuthRegisterEvent extends AuthEvent {
     required this.password,
   });
 }
+
+class AuthLogoutEvent extends AuthEvent {}

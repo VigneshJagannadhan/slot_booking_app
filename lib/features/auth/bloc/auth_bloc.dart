@@ -10,6 +10,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
     on<AuthLoginEvent>(_login);
     on<AuthRegisterEvent>(_register);
+    on<AuthLogoutEvent>(_logout);
   }
 
   _login(AuthLoginEvent event, Emitter<AuthState> emit) async {
@@ -34,6 +35,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
       emit(AuthSuccess(token: token));
+    } catch (e) {
+      emit(AuthError(error: e.toString()));
+    }
+  }
+
+  _logout(AuthLogoutEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      await authRepository.logout();
+      emit(AuthInitial());
     } catch (e) {
       emit(AuthError(error: e.toString()));
     }
