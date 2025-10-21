@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/features/auth/bloc/auth_bloc.dart';
-import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:slot_booking_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
@@ -10,15 +10,20 @@ import 'package:slot_booking_app/utils/app_styles.dart';
 import 'package:slot_booking_app/utils/app_validators.dart';
 import 'package:slot_booking_app/utils/snackbar_helper.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController(
+    text: 'John Doe',
+  );
   final TextEditingController _emailController = TextEditingController(
     text: 'test@gmail.com',
   );
   final TextEditingController _passwordController = TextEditingController(
     text: 'Abcd@1234',
   );
+  final TextEditingController _confirmPasswordController =
+      TextEditingController(text: 'Abcd@1234');
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,15 @@ class LoginScreen extends StatelessWidget {
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Login', style: AppStyles.ts24C000W600),
+                child: Text('Register', style: AppStyles.ts24C000W600),
+              ),
+              SizedBox(height: 20.h),
+              CustomTextFormField(
+                labelText: 'Name',
+                hintText: 'Enter your name',
+                prefixIcon: Icons.person,
+                controller: _nameController,
+                validator: AppValidators.validateName,
               ),
               SizedBox(height: 20.h),
               CustomTextFormField(
@@ -53,14 +66,25 @@ class LoginScreen extends StatelessWidget {
                 validator: AppValidators.validatePassword,
               ),
               SizedBox(height: 20.h),
-
+              CustomTextFormField(
+                labelText: 'Confirm Password',
+                hintText: 'Enter your confirm password',
+                prefixIcon: Icons.password,
+                controller: _confirmPasswordController,
+                validator:
+                    (value) => AppValidators.validateConfirmPassword(
+                      value,
+                      _passwordController.text,
+                    ),
+              ),
+              SizedBox(height: 20.h),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: _listenToAuthChanges,
                 builder: (context, state) {
                   return PrimaryButton(
                     isLoading: state is AuthLoading,
-                    label: 'Login',
-                    onPressed: () => _onLoginButtonPressed(context),
+                    label: 'Register',
+                    onPressed: () => _onRegisterButtonPressed(context),
                   );
                 },
               ),
@@ -79,14 +103,15 @@ class LoginScreen extends StatelessWidget {
   void _onCreateAccountButtonPressed(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterScreen()),
+      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 
-  void _onLoginButtonPressed(BuildContext context) {
+  void _onRegisterButtonPressed(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-        AuthLoginEvent(
+        AuthRegisterEvent(
+          name: _nameController.text,
           email: _emailController.text,
           password: _passwordController.text,
         ),
@@ -98,7 +123,7 @@ class LoginScreen extends StatelessWidget {
     if (state is AuthSuccess) {
       SnackbarHelper.showSnackbar(
         context: context,
-        message: 'Login successful',
+        message: 'Register successful',
       );
       Future.delayed(const Duration(milliseconds: 1500), () {
         if (context.mounted) {
