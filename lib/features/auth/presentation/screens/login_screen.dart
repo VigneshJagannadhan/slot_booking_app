@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/features/auth/bloc/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/bloc/auth/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_form_field.dart';
+import 'package:slot_booking_app/features/auth/presentation/widgets/password_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
 import 'package:slot_booking_app/utils/app_styles.dart';
@@ -45,10 +46,9 @@ class LoginScreen extends StatelessWidget {
                 validator: AppValidators.validateEmail,
               ),
               SizedBox(height: 20.h),
-              CustomTextFormField(
+              PasswordTextFormField(
                 labelText: 'Password',
                 hintText: 'Enter your password',
-                prefixIcon: Icons.password,
                 controller: _passwordController,
                 validator: AppValidators.validatePassword,
               ),
