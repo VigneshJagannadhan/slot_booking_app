@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slot_booking_app/utils/app_styles.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -21,9 +22,12 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
+      style: AppStyles.ts14CFFFFFFW400,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: AppStyles.ts12CFFFFFFW500,
+        hintStyle: AppStyles.ts12CFFFFFFW500,
         hintText: hintText,
         prefixIcon: Icon(prefixIcon),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),

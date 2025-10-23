@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/features/auth/bloc/auth/auth_bloc.dart';
-import 'package:slot_booking_app/features/auth/data/data_provider/auth_data_provider.dart';
-import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
-import 'package:slot_booking_app/features/auth/presentation/screens/login_screen.dart';
-import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:slot_booking_app/features/auth/presentation/splash_screen.dart';
 import 'package:slot_booking_app/helpers/shared_preferences_helper.dart';
 import 'package:slot_booking_app/utils/app_blocs.dart';
 
@@ -28,7 +24,7 @@ class MyApp extends StatelessWidget {
             child: MaterialApp(
               title: 'Slot Booking App',
               theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-              home: LoginScreen(),
+              home: SplashScreen(),
               debugShowCheckedModeBanner: false,
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/features/auth/bloc/visibility/visibility_bloc.dart';
+import 'package:slot_booking_app/utils/app_styles.dart';
 
 class PasswordTextFormField extends StatelessWidget {
   const PasswordTextFormField({
@@ -24,11 +25,14 @@ class PasswordTextFormField extends StatelessWidget {
         return TextFormField(
           controller: controller,
           validator: validator,
+          style: AppStyles.ts12CFFFFFFW500,
           obscureText: state is VisibilityOffState,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             labelText: labelText,
             hintText: hintText,
+            labelStyle: AppStyles.ts12CFFFFFFW500,
+            hintStyle: AppStyles.ts12CFFFFFFW500,
             prefixIcon: Icon(Icons.password),
             suffixIcon: GestureDetector(
               onTap:
@@ -39,6 +43,7 @@ class PasswordTextFormField extends StatelessWidget {
                 state is VisibilityOnState
                     ? Icons.visibility
                     : Icons.visibility_off,
+                color: Colors.white,
               ),
             ),
             border: OutlineInputBorder(
