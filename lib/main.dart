@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:slot_booking_app/features/auth/presentation/splash_screen.dart';
-import 'package:slot_booking_app/helpers/shared_preferences_helper.dart';
-import 'package:slot_booking_app/utils/app_blocs.dart';
+import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
+import 'package:slot_booking_app/core/utils/app_blocs.dart';
+import 'package:slot_booking_app/core/di/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await SharedPreferencesHelper.init();
+  await initDependencies();
   runApp(const MyApp());
 }
 

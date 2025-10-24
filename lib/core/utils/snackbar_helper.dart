@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/utils/app_styles.dart';
+import 'package:slot_booking_app/core/utils/app_styles.dart';
 
 class SnackbarHelper {
   static void showSnackbar({
@@ -16,15 +16,10 @@ class SnackbarHelper {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
         ),
-        content: Row(
-          children: [
-            Icon(
-              isError ? Icons.error : Icons.check_circle,
-              color: Colors.white,
-            ),
-            SizedBox(width: 10.w),
-            Text(message, style: AppStyles.ts14CFFFFFFW400),
-          ],
+        content: Text(
+          message,
+          style: AppStyles.ts14CFFFFFFW400,
+          textAlign: TextAlign.justify,
         ),
         backgroundColor:
             isError

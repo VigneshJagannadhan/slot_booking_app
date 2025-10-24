@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:slot_booking_app/utils/sp_keys.dart';
+import 'package:slot_booking_app/core/utils/sp_keys.dart';
 
 class SharedPreferencesHelper {
   static SharedPreferences? _preferences;

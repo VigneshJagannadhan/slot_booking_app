@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/features/auth/bloc/auth/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
-import 'package:slot_booking_app/utils/app_styles.dart';
+import 'package:slot_booking_app/core/utils/app_styles.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const String route = 'home';
   const HomeScreen({super.key});
 
   @override
@@ -23,7 +25,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20.h),
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
-                if (state is AuthInitial || state is AuthError) {
+                if (state is AuthInitial || state is AuthFailure) {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -34,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                 return PrimaryButton(
                   label: 'Logout',
                   onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogoutEvent());
+                    // context.read<AuthBloc>().add(AuthLogoutEvent());
                   },
                 );
               },

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
-import 'package:slot_booking_app/helpers/shared_preferences_helper.dart';
-import 'package:slot_booking_app/utils/app_styles.dart';
+import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
+import 'package:slot_booking_app/core/utils/app_styles.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

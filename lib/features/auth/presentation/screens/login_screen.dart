@@ -3,17 +3,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/features/auth/bloc/auth/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_event.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/password_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
-import 'package:slot_booking_app/utils/app_styles.dart';
-import 'package:slot_booking_app/utils/app_validators.dart';
-import 'package:slot_booking_app/utils/snackbar_helper.dart';
+import 'package:slot_booking_app/core/utils/app_styles.dart';
+import 'package:slot_booking_app/core/utils/app_validators.dart';
+import 'package:slot_booking_app/core/utils/snackbar_helper.dart';
 
 class LoginScreen extends StatelessWidget {
+  static const String route = 'login';
   LoginScreen({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController(
@@ -148,7 +151,7 @@ class LoginScreen extends StatelessWidget {
   void _onLoginButtonPressed(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-        AuthLoginEvent(
+        LoginRequested(
           email: _emailController.text,
           password: _passwordController.text,
         ),
@@ -168,12 +171,12 @@ class LoginScreen extends StatelessWidget {
         }
       });
     }
-    if (state is AuthError) {
+    if (state is AuthFailure) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (context.mounted) {
           SnackbarHelper.showSnackbar(
             context: context,
-            message: state.error,
+            message: state.failure.message,
             isError: true,
           );
         }
