@@ -9,9 +9,9 @@ import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_
 import 'package:slot_booking_app/features/auth/presentation/widgets/password_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
-import 'package:slot_booking_app/core/utils/app_styles.dart';
+import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/core/utils/app_validators.dart';
-import 'package:slot_booking_app/core/utils/snackbar_helper.dart';
+import 'package:slot_booking_app/core/helpers/snackbar_helper.dart';
 
 class RegisterScreen extends StatelessWidget {
   static const String route = 'register';
