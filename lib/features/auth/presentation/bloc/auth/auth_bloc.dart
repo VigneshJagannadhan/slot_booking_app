@@ -1,5 +1,6 @@
 // presentation/bloc/auth_bloc.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/register_usecase.dart';
 import 'auth_event.dart';
@@ -13,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     : super(AuthInitial()) {
     on<LoginRequested>(_onLoginRequested);
     on<RegisterRequested>(_onRegisterRequested);
+    on<LogoutRequested>(_logout);
   }
 
   Future<void> _onLoginRequested(
@@ -21,10 +23,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     final result = await login(e.email, e.password);
-    result.fold(
-      (f) => emit(AuthFailure(f)),
-      (token) => emit(AuthSuccess(token)),
-    );
+    result.fold((f) => emit(AuthFailure(f)), (token) async {
+      emit(AuthSuccess(token));
+      await SharedPreferencesHelper.setUserToken(token.token);
+    });
   }
 
   Future<void> _onRegisterRequested(
@@ -33,9 +35,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     final result = await register(e.name, e.email, e.password);
-    result.fold(
-      (f) => emit(AuthFailure(f)),
-      (token) => emit(AuthSuccess(token)),
-    );
+    result.fold((f) => emit(AuthFailure(f)), (token) async {
+      emit(AuthSuccess(token));
+      await SharedPreferencesHelper.setUserToken(token.token);
+    });
+  }
+
+  Future<bool> _logout(LogoutRequested e, Emitter<AuthState> emit) async {
+    emit(AuthInitial());
+    await SharedPreferencesHelper.clearUserToken();
+    return state is AuthInitial;
   }
 }

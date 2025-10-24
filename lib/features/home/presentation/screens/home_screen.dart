@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
@@ -36,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                 return PrimaryButton(
                   label: 'Logout',
                   onPressed: () {
-                    // context.read<AuthBloc>().add(AuthLogoutEvent());
+                    context.read<AuthBloc>().add(LogoutRequested());
                   },
                 );
               },

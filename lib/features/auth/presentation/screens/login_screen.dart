@@ -161,15 +161,13 @@ class LoginScreen extends StatelessWidget {
 
   void _listenToAuthChanges(BuildContext context, AuthState state) {
     if (state is AuthSuccess) {
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        if (context.mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false,
-          );
-        }
-      });
+      if (context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (route) => false,
+        );
+      }
     }
     if (state is AuthFailure) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
