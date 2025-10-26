@@ -8,6 +8,7 @@ import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sourc
 import 'package:slot_booking_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/visibility/visibility_bloc.dart';
 import 'package:slot_booking_app/core/helpers/network_info_helper.dart';
 import 'package:slot_booking_app/core/services/api_service.dart';
@@ -66,4 +67,6 @@ Future<void> initDependencies() async {
   );
 
   sl.registerFactory<VisibilityBloc>(() => VisibilityBloc());
+
+  sl.registerFactory<AuthUIBloc>(() => AuthUIBloc());
 }

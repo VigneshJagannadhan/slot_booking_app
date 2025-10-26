@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
+import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
 import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const String route = 'splash';
   const SplashScreen({super.key});
 
   @override
@@ -22,15 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
       Future.delayed(const Duration(seconds: 2), () {
         if (token != null && token.isNotEmpty) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          NavigationHelper.pushAndReplaceNamed(
+            context: context,
+            destination: HomeScreen.route,
           );
           return;
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
+          NavigationHelper.pushAndReplaceNamed(
+            context: context,
+            destination: RegisterScreen.route,
           );
         }
       });
