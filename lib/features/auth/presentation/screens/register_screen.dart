@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/core/themes/app_colors.dart';
 import 'package:slot_booking_app/core/utils/snackbar_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
@@ -17,9 +18,15 @@ import 'package:slot_booking_app/features/home/presentation/screens/home_screen.
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/core/utils/app_validators.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   static const String route = 'register';
-  RegisterScreen({super.key});
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController(
     text: 'John Doe',
@@ -32,6 +39,15 @@ class RegisterScreen extends StatelessWidget {
   );
   final TextEditingController _confirmPasswordController =
       TextEditingController(text: 'Abcd@1234');
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,26 +202,17 @@ class RegisterScreen extends StatelessWidget {
         );
       }
 
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        if (context.mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-            (route) => false,
-          );
-        }
-      });
+      NavigationHelper.pushAndReplaceNamed(
+        context: context,
+        destination: HomeScreen.route,
+      );
     }
     if (state is AuthFailure) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) {
-          SnackbarHelper.showSnackbar(
-            context: context,
-            message: state.failure.message,
-            isError: true,
-          );
-        }
-      });
+      SnackbarHelper.showSnackbar(
+        context: context,
+        message: state.failure.message,
+        isError: true,
+      );
     }
   }
 }

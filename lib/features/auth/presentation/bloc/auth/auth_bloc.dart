@@ -25,7 +25,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await login(e.email, e.password);
     result.fold((f) => emit(AuthFailure(f)), (token) async {
       emit(AuthSuccess(token));
-      await SharedPreferencesHelper.setUserToken(token.token);
+      if (token.token != null) {
+        await SharedPreferencesHelper.setUserToken(token.token!);
+      }
     });
   }
 
@@ -37,13 +39,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await register(e.name, e.email, e.password);
     result.fold((f) => emit(AuthFailure(f)), (token) async {
       emit(AuthSuccess(token));
-      await SharedPreferencesHelper.setUserToken(token.token);
+      if (token.token != null) {
+        await SharedPreferencesHelper.setUserToken(token.token!);
+      }
     });
   }
 
-  Future<bool> _logout(LogoutRequested e, Emitter<AuthState> emit) async {
+  Future<void> _logout(LogoutRequested e, Emitter<AuthState> emit) async {
     emit(AuthInitial());
     await SharedPreferencesHelper.clearUserToken();
-    return state is AuthInitial;
+    await SharedPreferencesHelper.clearUserRoute();
   }
 }

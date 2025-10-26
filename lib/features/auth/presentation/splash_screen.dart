@@ -23,6 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
       final token = SharedPreferencesHelper.getUserToken();
 
       Future.delayed(const Duration(seconds: 2), () {
+        if (!mounted) return;
+
         if (token != null && token.isNotEmpty) {
           NavigationHelper.pushAndReplaceNamed(
             context: context,

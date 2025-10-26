@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
@@ -27,9 +28,9 @@ class HomeScreen extends StatelessWidget {
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
                 if (state is AuthInitial || state is AuthFailure) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  NavigationHelper.pushAndReplaceNamed(
+                    context: context,
+                    destination: RegisterScreen.route,
                   );
                 }
               },
