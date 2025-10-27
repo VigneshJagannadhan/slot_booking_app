@@ -1,10 +1,15 @@
 import 'package:slot_booking_app/core/services/api_service.dart';
-import 'package:slot_booking_app/core/utils/app_urls.dart';
+import 'package:slot_booking_app/utils/app_urls.dart';
 import '../models/token_dto.dart';
 
 abstract class AuthRemoteDataSource {
   Future<TokenDto> login(String email, String password);
-  Future<TokenDto> register(String name, String email, String password);
+  Future<TokenDto> register(
+    String name,
+    String email,
+    String password,
+    bool isDoctor,
+  );
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -21,10 +26,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<TokenDto> register(String name, String email, String password) async {
+  Future<TokenDto> register(
+    String name,
+    String email,
+    String password,
+    bool isDoctor,
+  ) async {
     final response = await client.post(
       AppUrls.register,
-      data: {'name': name, 'email': email, 'password': password},
+      data: {
+        'name': name,
+        'email': email,
+        'password': password,
+        'isDoctor': isDoctor,
+      },
     );
     return TokenDto.fromJson(response.data);
   }

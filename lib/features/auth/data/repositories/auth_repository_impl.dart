@@ -4,7 +4,7 @@ import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sourc
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:slot_booking_app/features/auth/domain/entities/token_entity.dart';
 import 'package:slot_booking_app/core/helpers/network_info_helper.dart';
-import 'package:slot_booking_app/core/utils/app_exceptions.dart';
+import 'package:slot_booking_app/utils/app_exceptions.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remote;
@@ -21,7 +21,9 @@ class AuthRepositoryImpl implements AuthRepository {
       final dto = await remote.login(email, password);
       return Right(dto.toDomain());
     } on DioException catch (e) {
-      return Left(ServerFailure(e.response?.data["message"]));
+      return Left(
+        ServerFailure(e.response?.data["message"] ?? "Network error occurred"),
+      );
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -32,13 +34,18 @@ class AuthRepositoryImpl implements AuthRepository {
     String name,
     String email,
     String password,
+    bool isDoctor,
   ) async {
     if (!await networkInfo.isConnected) {
       return const Left(NetworkFailure('No internet'));
     }
     try {
-      final dto = await remote.register(name, email, password);
+      final dto = await remote.register(name, email, password, isDoctor);
       return Right(dto.toDomain());
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(e.response?.data["message"] ?? "Network error occurred"),
+      );
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

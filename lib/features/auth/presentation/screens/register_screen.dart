@@ -3,20 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/core/themes/app_colors.dart';
-import 'package:slot_booking_app/core/utils/snackbar_helper.dart';
+import 'package:slot_booking_app/utils/snackbar_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_bloc.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_event.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/liquid_glass_background.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/password_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
-import 'package:slot_booking_app/core/utils/app_validators.dart';
+import 'package:slot_booking_app/utils/app_validators.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String route = 'register';
@@ -28,44 +25,33 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController(
-    text: 'John Doe',
-  );
-  final TextEditingController _emailController = TextEditingController(
-    text: 'test@gmail.com',
-  );
-  final TextEditingController _passwordController = TextEditingController(
-    text: 'Abcd@1234',
-  );
-  final TextEditingController _confirmPasswordController =
-      TextEditingController(text: 'Abcd@1234');
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
+  final ValueNotifier<bool> _isInLoginMode = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isDoctor = ValueNotifier<bool>(false);
 
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _confirmPassController.dispose();
+    _isInLoginMode.dispose();
+    _isDoctor.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AuthUIBloc, AuthModeState>(
-        builder: (context, state) {
-          bool isInLoginMode = state is AuthModeLogin;
+      body: ValueListenableBuilder<bool>(
+        valueListenable: _isInLoginMode,
+        builder: (context, isInLoginMode, _) {
           return Form(
             key: _formKey,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [AppColors.primaryColor, AppColors.secondaryColor],
-                ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: AuthScreenBackground(
               child: Column(
                 children: [
                   Spacer(),
@@ -101,6 +87,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           controller: _emailController,
                           validator: AppValidators.validateEmail,
                         ),
+                        if (!isInLoginMode) SizedBox(height: 20.h),
+                        if (!isInLoginMode)
+                          ValueListenableBuilder<bool>(
+                            valueListenable: _isDoctor,
+                            builder: (context, isDoctor, _) {
+                              return Row(
+                                children: [
+                                  Text(
+                                    "Are you a doctor?",
+                                    style: AppStyles.ts12CFFFFFFW400,
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  Switch.adaptive(
+                                    value: isDoctor,
+                                    onChanged: (v) {
+                                      _isDoctor.value = v;
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         SizedBox(height: 20.h),
                         PasswordTextFormField(
                           labelText: 'Password',
@@ -113,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           PasswordTextFormField(
                             labelText: 'Confirm Password',
                             hintText: 'Enter your confirm password',
-                            controller: _confirmPasswordController,
+                            controller: _confirmPassController,
                             validator:
                                 (value) =>
                                     AppValidators.validateConfirmPassword(
@@ -165,8 +173,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _onAuthModeButtonPressed(BuildContext context) {
-    final authUiBloc = context.read<AuthUIBloc>();
-    authUiBloc.add(AuthModeChanged());
+    _isInLoginMode.value = !_isInLoginMode.value;
+    _formKey.currentState?.reset();
+    _isDoctor.value = false;
   }
 
   void _onSubmitButtonPressed({
@@ -184,6 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               name: _nameController.text,
               email: _emailController.text,
               password: _passwordController.text,
+              isDoctor: _isDoctor.value,
             ),
       );
     }
@@ -214,5 +224,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         isError: true,
       );
     }
+  }
+}
+
+class AuthScreenBackground extends StatelessWidget {
+  const AuthScreenBackground({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [AppColors.primaryColor, AppColors.secondaryColor],
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: child,
+    );
   }
 }

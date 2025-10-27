@@ -36,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    final result = await register(e.name, e.email, e.password);
+    final result = await register(e.name, e.email, e.password, e.isDoctor);
     result.fold((f) => emit(AuthFailure(f)), (token) async {
       emit(AuthSuccess(token));
       if (token.token != null) {
