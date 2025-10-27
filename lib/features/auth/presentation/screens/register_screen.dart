@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,19 +25,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController(
-    text: 'John Doe',
-  );
-  final TextEditingController _emailController = TextEditingController(
-    text: 'test@gmail.com',
-  );
-  final TextEditingController _passwordController = TextEditingController(
-    text: 'Abcd@1234',
-  );
-  final TextEditingController _confirmPasswordController =
-      TextEditingController(text: 'Abcd@1234');
-
-  final ValueNotifier<bool> isInLoginMode = ValueNotifier<bool>(true);
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
+  final ValueNotifier<bool> _isInLoginMode = ValueNotifier<bool>(true);
   final ValueNotifier<bool> _isDoctor = ValueNotifier<bool>(false);
 
   @override
@@ -47,8 +37,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    isInLoginMode.dispose();
+    _confirmPassController.dispose();
+    _isInLoginMode.dispose();
+    _isDoctor.dispose();
     super.dispose();
   }
 
@@ -56,19 +47,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ValueListenableBuilder<bool>(
-        valueListenable: isInLoginMode,
+        valueListenable: _isInLoginMode,
         builder: (context, isInLoginMode, _) {
           return Form(
             key: _formKey,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [AppColors.primaryColor, AppColors.secondaryColor],
-                ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+            child: AuthScreenBackground(
               child: Column(
                 children: [
                   Spacer(),
@@ -138,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           PasswordTextFormField(
                             labelText: 'Confirm Password',
                             hintText: 'Enter your confirm password',
-                            controller: _confirmPasswordController,
+                            controller: _confirmPassController,
                             validator:
                                 (value) =>
                                     AppValidators.validateConfirmPassword(
@@ -190,7 +173,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _onAuthModeButtonPressed(BuildContext context) {
-    isInLoginMode.value = !isInLoginMode.value;
+    _isInLoginMode.value = !_isInLoginMode.value;
+    _formKey.currentState?.reset();
+    _isDoctor.value = false;
   }
 
   void _onSubmitButtonPressed({
@@ -239,5 +224,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         isError: true,
       );
     }
+  }
+}
+
+class AuthScreenBackground extends StatelessWidget {
+  const AuthScreenBackground({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [AppColors.primaryColor, AppColors.secondaryColor],
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: child,
+    );
   }
 }
