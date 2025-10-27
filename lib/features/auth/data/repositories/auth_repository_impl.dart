@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sources.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
@@ -19,6 +20,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final dto = await remote.login(email, password);
       return Right(dto.toDomain());
+    } on DioException catch (e) {
+      return Left(ServerFailure(e.response?.data["message"]));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

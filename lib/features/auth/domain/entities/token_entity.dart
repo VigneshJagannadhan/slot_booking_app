@@ -1,25 +1,16 @@
 class Token {
-  final String token;
-  final String refreshToken;
-  final User user;
+  final String? token;
+  final String? refreshToken;
+  final User? user;
 
-  const Token({
-    required this.token,
-    required this.refreshToken,
-    required this.user,
-  });
+  const Token({this.token, this.refreshToken, this.user});
 }
 
 class User {
-  final String id;
-  final String name;
-  final String email;
-  final String role;
+  final String? id;
+  final String? name;
+  final String? email;
+  final String? role;
 
-  const User({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.role,
-  });
+  const User({this.id, this.name, this.email, this.role});
 }

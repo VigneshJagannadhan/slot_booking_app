@@ -1,11 +1,28 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
 
-pushToNamedRoute({required BuildContext context, required String route}) =>
-    Navigator.pushNamed(context, route);
+class NavigationHelper {
+  static void pushAndReplaceNamed({
+    required BuildContext context,
+    required String destination,
+  }) {
+    Navigator.pushReplacementNamed(context, destination);
+    SharedPreferencesHelper.setUserRoute(destination.toString());
+  }
 
-pushReplaceNamedRoute({required BuildContext context, required String route}) =>
-    Navigator.pushReplacementNamed(context, route);
+  static void pushNamed({
+    required BuildContext context,
+    required String destination,
+  }) {
+    Navigator.pushNamed(context, destination);
+    SharedPreferencesHelper.setUserRoute(destination.toString());
+  }
 
-popRoute({required BuildContext context}) {
-  Navigator.pop(context);
+  static void pop(BuildContext context) {
+    Navigator.pop(context);
+    final route = ModalRoute.of(context)?.settings.name;
+    if (route != null) {
+      SharedPreferencesHelper.setUserRoute(route);
+    }
+  }
 }

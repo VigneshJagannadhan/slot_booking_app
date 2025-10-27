@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/visibility/visibility_bloc.dart';
-import 'package:slot_booking_app/core/utils/app_styles.dart';
+import 'package:slot_booking_app/core/themes/app_styles.dart';
 
 class PasswordTextFormField extends StatelessWidget {
   const PasswordTextFormField({

@@ -23,4 +23,19 @@ class SharedPreferencesHelper {
     return await _preferences?.setString(SPKeys.userToken, "") ??
         Future.value(false);
   }
+
+  /// USER ROUTES
+  static String? getUserRoute() {
+    return _preferences?.getString(SPKeys.lastRoute);
+  }
+
+  static Future<bool> setUserRoute(String value) async {
+    return await _preferences?.setString(SPKeys.lastRoute, value) ??
+        Future.value(false);
+  }
+
+  static Future<bool> clearUserRoute() async {
+    return await _preferences?.setString(SPKeys.lastRoute, "") ??
+        Future.value(false);
+  }
 }
