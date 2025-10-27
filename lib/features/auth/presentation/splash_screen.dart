@@ -19,8 +19,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final token = SharedPreferencesHelper.getUserToken();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final token = await SharedPreferencesHelper.getUserToken();
 
       Future.delayed(const Duration(seconds: 2), () {
         if (!mounted) return;

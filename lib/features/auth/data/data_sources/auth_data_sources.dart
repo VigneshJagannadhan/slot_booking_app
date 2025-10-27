@@ -1,5 +1,5 @@
 import 'package:slot_booking_app/core/services/api_service.dart';
-import 'package:slot_booking_app/core/utils/app_urls.dart';
+import 'package:slot_booking_app/utils/app_urls.dart';
 import '../models/token_dto.dart';
 
 abstract class AuthRemoteDataSource {

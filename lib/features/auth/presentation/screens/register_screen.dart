@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/core/themes/app_colors.dart';
-import 'package:slot_booking_app/core/utils/snackbar_helper.dart';
+import 'package:slot_booking_app/utils/snackbar_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
@@ -16,7 +16,7 @@ import 'package:slot_booking_app/features/auth/presentation/widgets/password_tex
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
-import 'package:slot_booking_app/core/utils/app_validators.dart';
+import 'package:slot_booking_app/utils/app_validators.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String route = 'register';

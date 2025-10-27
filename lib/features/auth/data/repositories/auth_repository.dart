@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:slot_booking_app/features/auth/domain/entities/token_entity.dart';
-import 'package:slot_booking_app/core/utils/app_exceptions.dart';
+import 'package:slot_booking_app/utils/app_exceptions.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, Token>> login(String email, String password);
