@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/visibility/visibility_bloc.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 
-class PasswordTextFormField extends StatelessWidget {
+class PasswordTextFormField extends StatefulWidget {
   const PasswordTextFormField({
     super.key,
     required this.labelText,
@@ -19,30 +17,39 @@ class PasswordTextFormField extends StatelessWidget {
   final FormFieldValidator<String> validator;
 
   @override
+  State<PasswordTextFormField> createState() => _PasswordTextFormFieldState();
+}
+
+class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
+  final ValueNotifier<bool> _isVisible = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _isVisible.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VisibilityBloc, VisibilityState>(
-      builder: (context, state) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: _isVisible,
+      builder: (context, isVisible, _) {
         return TextFormField(
-          controller: controller,
-          validator: validator,
+          controller: widget.controller,
+          validator: widget.validator,
           style: AppStyles.ts12CFFFFFFW500,
-          obscureText: state is VisibilityOffState,
+          obscureText: isVisible,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
-            labelText: labelText,
-            hintText: hintText,
+            labelText: widget.labelText,
+            hintText: widget.hintText,
             labelStyle: AppStyles.ts12CFFFFFFW500,
             hintStyle: AppStyles.ts12CFFFFFFW500,
             prefixIcon: Icon(Icons.password),
             suffixIcon: GestureDetector(
-              onTap:
-                  () => context.read<VisibilityBloc>().add(
-                    VisibilityToggleEvent(),
-                  ),
+              onTap: () => _isVisible.value = !_isVisible.value,
               child: Icon(
-                state is VisibilityOnState
-                    ? Icons.visibility
-                    : Icons.visibility_off,
+                isVisible ? Icons.visibility : Icons.visibility_off,
                 color: Colors.white,
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
-import 'package:slot_booking_app/features/auth/presentation/splash_screen.dart';
+import 'package:slot_booking_app/features/auth/presentation/screens/splash_screen.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
 
 class AppRoutes {

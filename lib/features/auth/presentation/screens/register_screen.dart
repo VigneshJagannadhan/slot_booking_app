@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +9,6 @@ import 'package:slot_booking_app/utils/snackbar_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_state.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_bloc.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_event.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth/auth_ui_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/liquid_glass_background.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/password_text_form_field.dart';
@@ -40,21 +39,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _confirmPasswordController =
       TextEditingController(text: 'Abcd@1234');
 
+  final ValueNotifier<bool> isInLoginMode = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> _isDoctor = ValueNotifier<bool>(false);
+
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    isInLoginMode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AuthUIBloc, AuthModeState>(
-        builder: (context, state) {
-          bool isInLoginMode = state is AuthModeLogin;
+      body: ValueListenableBuilder<bool>(
+        valueListenable: isInLoginMode,
+        builder: (context, isInLoginMode, _) {
           return Form(
             key: _formKey,
             child: Container(
@@ -101,6 +104,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           controller: _emailController,
                           validator: AppValidators.validateEmail,
                         ),
+                        if (!isInLoginMode) SizedBox(height: 20.h),
+                        if (!isInLoginMode)
+                          ValueListenableBuilder<bool>(
+                            valueListenable: _isDoctor,
+                            builder: (context, isDoctor, _) {
+                              return Row(
+                                children: [
+                                  Text(
+                                    "Are you a doctor?",
+                                    style: AppStyles.ts12CFFFFFFW400,
+                                  ),
+                                  SizedBox(width: 20.w),
+                                  Switch.adaptive(
+                                    value: isDoctor,
+                                    onChanged: (v) {
+                                      _isDoctor.value = v;
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                         SizedBox(height: 20.h),
                         PasswordTextFormField(
                           labelText: 'Password',
@@ -165,8 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _onAuthModeButtonPressed(BuildContext context) {
-    final authUiBloc = context.read<AuthUIBloc>();
-    authUiBloc.add(AuthModeChanged());
+    isInLoginMode.value = !isInLoginMode.value;
   }
 
   void _onSubmitButtonPressed({
@@ -184,6 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               name: _nameController.text,
               email: _emailController.text,
               password: _passwordController.text,
+              isDoctor: _isDoctor.value,
             ),
       );
     }

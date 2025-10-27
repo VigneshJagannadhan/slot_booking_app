@@ -34,13 +34,18 @@ class AuthRepositoryImpl implements AuthRepository {
     String name,
     String email,
     String password,
+    bool isDoctor,
   ) async {
     if (!await networkInfo.isConnected) {
       return const Left(NetworkFailure('No internet'));
     }
     try {
-      final dto = await remote.register(name, email, password);
+      final dto = await remote.register(name, email, password, isDoctor);
       return Right(dto.toDomain());
+    } on DioException catch (e) {
+      return Left(
+        ServerFailure(e.response?.data["message"] ?? "Network error occurred"),
+      );
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
