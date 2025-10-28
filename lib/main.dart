@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
             providers: getAppBlocs(),
             child: MaterialApp(
               title: 'Slot Booking App',
+              theme: ThemeData(scaffoldBackgroundColor: Colors.white),
               initialRoute: AppRoutes.getInitialRoute(),
               routes: AppRoutes.routes,
               debugShowCheckedModeBanner: false,

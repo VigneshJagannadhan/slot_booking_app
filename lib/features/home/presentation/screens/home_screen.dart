@@ -94,20 +94,40 @@ class DoctorCard extends StatelessWidget {
   final Doctor doctor;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 8.h),
-      child: ListTile(
-        leading: CircleAvatar(
-          radius: 20.r,
-          backgroundColor: Theme.of(context).primaryColor,
-        ),
-        title: Text(doctor.name, style: AppStyles.ts14C000W600),
-        subtitle: Text(doctor.hospitalOrClinic, style: AppStyles.ts12C000W400),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          size: 16.sp,
-          color: Colors.grey,
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300,
+            blurRadius: 10,
+            spreadRadius: 1,
+            offset: Offset(0, 5),
+          ),
+        ],
+        color: Colors.white,
+      ),
+      margin: EdgeInsets.only(top: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 30.r,
+            child: Text(
+              doctor.name.split('').first,
+              style: AppStyles.ts24CFFFFFFW800,
+            ),
+          ),
+          SizedBox(width: 10.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(doctor.name, style: AppStyles.ts14C000W600),
+              Text(doctor.id, style: AppStyles.ts14C000W600),
+              Text(doctor.hospitalOrClinic, style: AppStyles.ts12C000W400),
+            ],
+          ),
+        ],
       ),
     );
   }
