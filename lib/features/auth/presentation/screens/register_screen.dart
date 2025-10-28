@@ -27,6 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _hospitalOrClinicController =
+      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
   final ValueNotifier<bool> _isInLoginMode = ValueNotifier<bool>(true);
@@ -55,14 +57,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Column(
                 children: [
                   Spacer(),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      isInLoginMode ? 'Welcome Back' : 'Create a new account',
-                      style: AppStyles.ts28CFFFFFFW600,
-                    ),
+                  Text(
+                    isInLoginMode ? 'Welcome Back' : 'Create a new account',
+                    style: AppStyles.ts28CFFFFFFW600,
                   ),
-                  if (!isInLoginMode) SizedBox(height: 20.h),
+                  SizedBox(height: 30.h),
                   LiquidGlassBackground(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -90,33 +89,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ValueListenableBuilder<bool>(
                             valueListenable: _isDoctor,
                             builder: (context, isDoctor, _) {
-                              return Container(
-                                width: 1.sw,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  color: Colors.white,
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 20.w,
-                                  vertical: 10.h,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Are you a doctor?",
-                                      style: AppStyles.ts12C000W400,
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 1.sw,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      color: Colors.white,
                                     ),
-                                    SizedBox(width: 20.w),
-                                    Switch.adaptive(
-                                      value: isDoctor,
-                                      onChanged: (v) {
-                                        _isDoctor.value = v;
-                                      },
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20.w,
+                                      vertical: 10.h,
                                     ),
-                                  ],
-                                ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Are you a doctor?",
+                                          style: AppStyles.ts12C000W400,
+                                        ),
+                                        SizedBox(width: 20.w),
+                                        Switch.adaptive(
+                                          value: isDoctor,
+                                          onChanged: (v) {
+                                            _isDoctor.value = v;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (_isDoctor.value) SizedBox(height: 20.h),
+                                  if (_isDoctor.value)
+                                    CustomTextFormField(
+                                      labelText: 'Hospital or Clinic',
+                                      hintText: '',
+                                      prefixIcon: Icons.local_hospital,
+                                      controller: _hospitalOrClinicController,
+                                      validator:
+                                          AppValidators.validateHospitalName,
+                                    ),
+                                ],
                               );
                             },
                           ),
@@ -205,6 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               email: _emailController.text,
               password: _passwordController.text,
               isDoctor: _isDoctor.value,
+              hospital: _hospitalOrClinicController.text,
             ),
       );
     }

@@ -5,4 +5,5 @@ class AppUrls {
       dotenv.env['BASE_URL'] ?? "http://localhost:8080/api/";
   static const String login = 'auth/signin';
   static const String register = 'auth/signup';
+  static const String doctors = 'user/doctors';
 }

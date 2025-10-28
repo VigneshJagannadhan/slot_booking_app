@@ -46,4 +46,11 @@ class AppValidators {
     }
     return null;
   }
+
+  static String? validateHospitalName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Hospital name is required';
+    }
+    return null;
+  }
 }

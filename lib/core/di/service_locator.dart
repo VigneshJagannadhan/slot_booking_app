@@ -3,13 +3,17 @@ import 'package:dio/dio.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
-import 'package:slot_booking_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sources.dart';
+import 'package:slot_booking_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:slot_booking_app/core/helpers/network_info_helper.dart';
 import 'package:slot_booking_app/core/services/api_service.dart';
+import 'package:slot_booking_app/features/home/data/data_sources/doctor_remote_data_source.dart';
+import 'package:slot_booking_app/features/home/data/repositories/doctor_repository.dart';
+import 'package:slot_booking_app/features/home/domain/usecases/get_doctors_usecase.dart';
+import 'package:slot_booking_app/features/home/presentation/bloc/doctor_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -42,10 +46,21 @@ Future<void> initDependencies() async {
     () => AuthRemoteDataSourceImpl(sl<ApiClient>()),
   );
 
+  sl.registerLazySingleton<DoctorRemoteDataSource>(
+    () => DoctorRemoteDataSourceImpl(sl<ApiClient>()),
+  );
+
   // Repository
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       remote: sl<AuthRemoteDataSource>(),
+      networkInfo: sl<NetworkInfo>(),
+    ),
+  );
+
+  sl.registerLazySingleton<DoctorRepository>(
+    () => DoctorRepositoryImpl(
+      remote: sl<DoctorRemoteDataSource>(),
       networkInfo: sl<NetworkInfo>(),
     ),
   );
@@ -59,8 +74,16 @@ Future<void> initDependencies() async {
     () => RegisterUseCase(sl<AuthRepository>()),
   );
 
+  sl.registerLazySingleton<GetDoctorsUseCase>(
+    () => GetDoctorsUseCase(sl<DoctorRepository>()),
+  );
+
   // Blocs
   sl.registerFactory<AuthBloc>(
     () => AuthBloc(login: sl<LoginUseCase>(), register: sl<RegisterUseCase>()),
+  );
+
+  sl.registerFactory<DoctorBloc>(
+    () => DoctorBloc(getDoctorsUseCase: sl<GetDoctorsUseCase>()),
   );
 }

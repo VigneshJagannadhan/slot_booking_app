@@ -9,5 +9,6 @@ abstract class AuthRepository {
     String email,
     String password,
     bool isDoctor,
+    String hospital,
   );
 }

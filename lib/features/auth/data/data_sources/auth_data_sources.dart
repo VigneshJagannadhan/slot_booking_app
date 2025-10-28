@@ -1,14 +1,15 @@
 import 'package:slot_booking_app/core/services/api_service.dart';
 import 'package:slot_booking_app/utils/app_urls.dart';
-import '../models/token_dto.dart';
+import '../models/token_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<TokenDto> login(String email, String password);
-  Future<TokenDto> register(
+  Future<TokenModel> login(String email, String password);
+  Future<TokenModel> register(
     String name,
     String email,
     String password,
     bool isDoctor,
+    String? hospital,
   );
 }
 
@@ -17,20 +18,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this.client);
 
   @override
-  Future<TokenDto> login(String email, String password) async {
+  Future<TokenModel> login(String email, String password) async {
     final response = await client.post(
       AppUrls.login,
       data: {'email': email, 'password': password},
     );
-    return TokenDto.fromJson(response.data);
+    return TokenModel.fromJson(response.data);
   }
 
   @override
-  Future<TokenDto> register(
+  Future<TokenModel> register(
     String name,
     String email,
     String password,
     bool isDoctor,
+    String? hospital,
   ) async {
     final response = await client.post(
       AppUrls.register,
@@ -39,8 +41,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'email': email,
         'password': password,
         'isDoctor': isDoctor,
+        'hospitalOrClinic': hospital,
       },
     );
-    return TokenDto.fromJson(response.data);
+    return TokenModel.fromJson(response.data);
   }
 }

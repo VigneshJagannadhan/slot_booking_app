@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
 
 class ApiClient {
   final Dio _dio;
@@ -22,10 +23,11 @@ class ApiClient {
     Options? options,
     CancelToken? cancelToken,
   }) async {
+    final token = await SharedPreferencesHelper.getUserToken();
     return _dio.get<T>(
       path,
       queryParameters: queryParameters,
-      options: options,
+      options: Options(headers: {"Authorization": token}),
       cancelToken: cancelToken,
     );
   }

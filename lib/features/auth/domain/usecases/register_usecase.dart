@@ -12,5 +12,6 @@ class RegisterUseCase {
     String email,
     String password,
     bool isDoctor,
-  ) => repo.register(name, email, password, isDoctor);
+    String hospital,
+  ) => repo.register(name, email, password, isDoctor, hospital);
 }
