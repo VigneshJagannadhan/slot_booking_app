@@ -8,8 +8,6 @@ import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
-import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
-import 'package:slot_booking_app/features/home/domain/entities/doctor_entity.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_bloc.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_events.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_state.dart';

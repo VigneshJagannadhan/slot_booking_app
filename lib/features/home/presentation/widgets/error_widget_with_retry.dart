@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
+import 'package:slot_booking_app/core/constants/app_constants.dart';
 import 'package:slot_booking_app/core/helpers/network_helper.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
@@ -21,7 +23,7 @@ class ErrorWidgetWithRetry extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
+          Lottie.asset(AppConstants.failedLottie, repeat: false),
           SizedBox(height: 16.h),
           Text('Something went wrong', style: AppStyles.ts16C000W500),
           SizedBox(height: 8.h),
