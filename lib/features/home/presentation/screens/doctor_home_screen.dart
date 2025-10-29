@@ -23,161 +23,178 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            String userName = 'Doctor';
-            String initials = 'D';
-            if (state is UserSuccess) {
-              userName = state.user.name ?? 'Doctor';
-              initials =
-                  userName.isNotEmpty
-                      ? userName
-                          .split(' ')
-                          .map((n) => n[0])
-                          .take(2)
-                          .join()
-                          .toUpperCase()
-                      : 'D';
-            }
-
-            return Row(
-              children: [
-                CircleAvatar(
-                  radius: 25.r,
-                  child: Text(initials, style: AppStyles.ts14C000W400),
-                ),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Welcome,', style: AppStyles.ts12C000W400),
-                    Text(userName, style: AppStyles.ts14C000W600),
-                  ],
-                ),
-              ],
-            );
-          },
-        ),
-        backgroundColor: Colors.white,
-        actions: [
-          BlocConsumer<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthInitial || state is AuthFailure) {
-                NavigationHelper.pushAndReplaceNamed(
-                  context: context,
-                  destination: RegisterScreen.route,
-                );
-              }
-            },
-            builder: (context, state) {
-              return IconButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(LogoutRequested());
-                },
-                icon: const Icon(Icons.settings, color: Colors.black),
-              );
-            },
-          ),
-          SizedBox(width: 16.w),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+      body: AuthScreenBackground(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Doctor Dashboard', style: AppStyles.ts24C000W600),
-            SizedBox(height: 10.h),
-            Column(
-              children: [
-                DoctorDashBoardItem(
-                  header: 'Total appoinments today',
-                  count: 15,
-                ),
-                SizedBox(height: 10.h),
-                DoctorDashBoardItem(header: 'Pending appoinments', count: 12),
-                SizedBox(height: 10.h),
-                DoctorDashBoardItem(header: 'Completed appoinments', count: 3),
-              ],
-            ),
-            SizedBox(height: 20.h),
+            /// APPBAR
+            Container(
+              margin: EdgeInsets.only(top: 70.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      late String userName;
+                      if (state is UserSuccess) {
+                        userName = state.user.name ?? '';
+                      }
 
+                      return Row(
+                        children: [
+                          CircleAvatar(radius: 20.r),
+                          SizedBox(width: 10.w),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome,',
+                                style: AppStyles.ts12CFFFFFFW400,
+                              ),
+                              Text(userName, style: AppStyles.ts14CFFFFFFW600),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+
+                  BlocConsumer<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthInitial || state is AuthFailure) {
+                        NavigationHelper.pushAndReplaceNamed(
+                          context: context,
+                          destination: RegisterScreen.route,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return IconButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(LogoutRequested());
+                        },
+                        icon: const Icon(Icons.settings, color: Colors.white),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+
+            /// DASHBOARD
+            DoctorDashboard(),
+
+            /// MANAGE BUTTONS
             Column(
               children: [
                 PrimaryButton(onPressed: () {}, label: 'Manage Appointments'),
                 SizedBox(height: 10.h),
                 PrimaryButton(onPressed: () {}, label: 'Set Available Slots'),
+                SizedBox(height: 20.h),
               ],
             ),
-            SizedBox(height: 20.h),
 
             /// PLACEHOLDER FOR FUTURE FEATURES
-            Text('Appointments & Slots', style: AppStyles.ts24C000W600),
+            AppoinmentsSection(),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-            SizedBox(height: 10.h),
+class AppoinmentsSection extends StatelessWidget {
+  const AppoinmentsSection({super.key});
 
-            Flexible(
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder:
-                    (context, index) => RoundedContainerWithShadow(
-                      padding: EdgeInsets.all(15.r),
-                      child: Column(
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(radius: 25.r),
-                              SizedBox(width: 10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Jake Williams",
-                                    style: AppStyles.ts14C000W600,
-                                  ),
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Next Appoinment', style: AppStyles.ts24CFFFFFFW600),
+        SizedBox(height: 10.h),
+        AppoinmentItem(),
+      ],
+    );
+  }
+}
 
-                                  Text(
-                                    "10:00 am - 10:30 am",
-                                    style: AppStyles.ts12C000W400,
-                                  ),
+class AppoinmentItem extends StatelessWidget {
+  const AppoinmentItem({super.key});
 
-                                  Text(
-                                    "Reason : Consultation",
-                                    style: AppStyles.ts12C000W400,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: PrimaryButton(
-                                  color: Colors.red,
-                                  onPressed: () {},
-                                  label: "Cancel",
-                                ),
-                              ),
-                              SizedBox(width: 10.w),
-                              Expanded(
-                                child: PrimaryButton(
-                                  onPressed: () {},
-                                  label: "Start",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.h),
+      child: RoundedContainerWithShadow(
+        padding: EdgeInsets.all(15.r),
+        child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(radius: 25.r),
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Jake Williams", style: AppStyles.ts14C000W600),
+
+                    Text("10:00 am - 10:30 am", style: AppStyles.ts12C000W400),
+
+                    Text(
+                      "Reason : Consultation",
+                      style: AppStyles.ts12C000W400,
                     ),
-              ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            Row(
+              children: [
+                Expanded(
+                  child: PrimaryButton(
+                    color: Colors.red,
+                    onPressed: () {},
+                    label: "Cancel",
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: PrimaryButton(onPressed: () {}, label: "Start"),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DoctorDashboard extends StatelessWidget {
+  const DoctorDashboard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 20.h),
+        Text('Doctor Dashboard', style: AppStyles.ts24CFFFFFFW600),
+        SizedBox(height: 10.h),
+        Column(
+          children: [
+            DoctorDashBoardItem(header: 'Total appoinments today', count: 15),
+            SizedBox(height: 10.h),
+            DoctorDashBoardItem(header: 'Pending appoinments', count: 12),
+            SizedBox(height: 10.h),
+            DoctorDashBoardItem(header: 'Completed appoinments', count: 3),
+          ],
+        ),
+        SizedBox(height: 20.h),
+      ],
     );
   }
 }
