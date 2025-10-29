@@ -9,9 +9,11 @@ class PrimaryButton extends StatelessWidget {
     required this.onPressed,
     required this.label,
     this.isLoading = false,
+    this.color,
   });
 
   final String label;
+  final Color? color;
   final bool isLoading;
   final VoidCallback onPressed;
 
@@ -22,13 +24,14 @@ class PrimaryButton extends StatelessWidget {
       height: 40.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: color ?? Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
         ),
         onPressed: onPressed,
+
         child:
             isLoading
                 ? const CupertinoActivityIndicator(color: Colors.white)

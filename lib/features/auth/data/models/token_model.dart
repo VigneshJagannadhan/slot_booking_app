@@ -3,7 +3,7 @@ import 'package:slot_booking_app/features/auth/domain/entities/token_entity.dart
 class TokenModel {
   final String? token;
   final String? refreshToken;
-  final UserDto? user;
+  final UserModel? user;
 
   const TokenModel({this.token, this.refreshToken, this.user});
 
@@ -11,7 +11,7 @@ class TokenModel {
     return TokenModel(
       token: json['token'],
       refreshToken: json['refreshToken'],
-      user: json['user'] != null ? UserDto.fromJson(json['user']) : null,
+      user: json['user'] != null ? UserModel.fromJson(json['user']) : null,
     );
   }
 
@@ -25,7 +25,7 @@ class TokenModel {
       Token(token: token, refreshToken: refreshToken, user: user?.toDomain());
 }
 
-class UserDto {
+class UserModel {
   final String? id;
   final String? name;
   final String? email;
@@ -33,7 +33,7 @@ class UserDto {
   final bool? isDoctor;
   final String? hospitalOrClinic;
 
-  const UserDto({
+  const UserModel({
     this.id,
     this.name,
     this.email,
@@ -42,7 +42,7 @@ class UserDto {
     this.hospitalOrClinic,
   });
 
-  factory UserDto.fromJson(Map<String, dynamic> json) => UserDto(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     id: json['id'],
     name: json['name'],
     email: json['email'],

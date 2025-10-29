@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:slot_booking_app/features/auth/domain/entities/token_entity.dart';
+import 'package:slot_booking_app/features/auth/domain/entities/user_entity.dart';
 import 'package:slot_booking_app/utils/app_exceptions.dart';
 
 abstract class AuthState extends Equatable {
@@ -22,6 +23,20 @@ class AuthSuccess extends AuthState {
 class AuthFailure extends AuthState {
   final Failure failure;
   const AuthFailure(this.failure);
+  @override
+  List<Object?> get props => [failure];
+}
+
+class UserSuccess extends AuthState {
+  final UserEntity user;
+  const UserSuccess(this.user);
+  @override
+  List<Object?> get props => [user];
+}
+
+class UserFailure extends AuthState {
+  final Failure failure;
+  const UserFailure(this.failure);
   @override
   List<Object?> get props => [failure];
 }
