@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/core/helpers/network_helper.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart';
-import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart';
-import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
+import 'package:slot_booking_app/features/auth/domain/entities/user_entity.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:slot_booking_app/features/auth/presentation/widgets/gradient_background.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_bloc.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_events.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_state.dart';
@@ -34,125 +33,160 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Row(
-              children: [
-                CircleAvatar(
-                  radius: 25.r,
-                  child: Text('VJ', style: AppStyles.ts14C000W400),
-                ),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: GradientBackground(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.transparent,
+              floating: false,
+              pinned: false,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('Welcome,', style: AppStyles.ts12C000W400),
-                    Text('Vignesh Jagannadhan', style: AppStyles.ts14C000W600),
+                    CircleAvatar(radius: 25.r),
+                    SizedBox(width: 10.w),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text('Welcome,', style: AppStyles.ts14CFFFFFFW400),
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            UserEntity? user;
+                            if (state is UserSuccess) {
+                              user = state.user;
+                            }
+                            return Text(
+                              user?.name ?? "Guest",
+                              style: AppStyles.ts18CFFFFFFW700,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-            backgroundColor: Colors.amber,
-            expandedHeight: 200.h,
-            flexibleSpace: Container(),
-
-            actions: [
-              BlocConsumer<AuthBloc, AuthState>(
-                listener: (context, state) {
-                  if (state is AuthInitial || state is AuthFailure) {
-                    NavigationHelper.pushAndReplaceNamed(
-                      context: context,
-                      destination: RegisterScreen.route,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  return IconButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(LogoutRequested());
-                    },
-                    icon: const Icon(Icons.settings, color: Colors.black),
-                  );
-                },
               ),
-              SizedBox(width: 16.w),
-            ],
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-              child: Text('Available Doctors', style: AppStyles.ts24C000W600),
             ),
-          ),
-          BlocConsumer<DoctorBloc, DoctorState>(
-            listener: (context, state) {
-              /// SHOW SNACKBAR ON ERROR
-              if (state is DoctorFailure) {
-                SnackbarHelper.showSnackbar(
-                  context: context,
-                  message: NetworkHelper.handleNetworkErrMsg(state.message),
-                  isError: true,
-                );
-              }
-            },
-            builder: (context, state) {
-              /// SHOW LOADING INDICATOR
-              if (state is DoctorLoading) {
-                return SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: Center(child: CircularProgressIndicator.adaptive()),
-                  ),
-                );
-              }
 
-              /// SHOW ERROR WIDGET WITH RETRY BUTTON
-              if (state is DoctorFailure) {
-                return SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(20.w),
-                    child: ErrorWidgetWithRetry(
-                      errorMessage: state.message,
-                      onRetry: () {
-                        context.read<DoctorBloc>().add(LoadDoctors());
-                      },
-                    ),
-                  ),
-                );
-              }
-
-              /// SHOW EMPTY LIST HANDLER
-              if (state is DoctorLoaded) {
-                if (state.doctors.isEmpty) {
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _SearchBarDelegate(),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Text(
+                  'Available Doctors',
+                  style: AppStyles.ts24CFFFFFFW600,
+                ),
+              ),
+            ),
+            BlocConsumer<DoctorBloc, DoctorState>(
+              listener: (context, state) {
+                /// SHOW SNACKBAR ON ERROR
+                if (state is DoctorFailure) {
+                  SnackbarHelper.showSnackbar(
+                    context: context,
+                    message: NetworkHelper.handleNetworkErrMsg(state.message),
+                    isError: true,
+                  );
+                }
+              },
+              builder: (context, state) {
+                /// SHOW LOADING INDICATOR
+                if (state is DoctorLoading) {
                   return SliverToBoxAdapter(
                     child: Padding(
                       padding: EdgeInsets.all(20.w),
-                      child: EmptyListHandler(
-                        isEmpty: true,
-                        emptyListMessage: 'No doctors available',
-                        child: const SizedBox.shrink(),
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
                       ),
                     ),
                   );
                 }
 
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: DoctorCard(doctor: state.doctors[index]),
+                /// SHOW ERROR WIDGET WITH RETRY BUTTON
+                if (state is DoctorFailure) {
+                  return SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(20.w),
+                      child: ErrorWidgetWithRetry(
+                        errorMessage: state.message,
+                        onRetry: () {
+                          context.read<DoctorBloc>().add(LoadDoctors());
+                        },
+                      ),
                     ),
-                    childCount: state.doctors.length,
-                  ),
-                );
-              }
+                  );
+                }
 
-              return const SliverToBoxAdapter(child: SizedBox.shrink());
-            },
-          ),
-        ],
+                /// SHOW EMPTY LIST HANDLER
+                if (state is DoctorLoaded) {
+                  if (state.doctors.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(20.w),
+                        child: EmptyListHandler(
+                          isEmpty: true,
+                          emptyListMessage: 'No doctors available',
+                          child: const SizedBox.shrink(),
+                        ),
+                      ),
+                    );
+                  }
+
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) =>
+                          DoctorCard(doctor: state.doctors[index]),
+                      childCount: state.doctors.length,
+                    ),
+                  );
+                }
+
+                return const SliverToBoxAdapter(child: SizedBox.shrink());
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class _SearchBarDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  double get minExtent => 150;
+  @override
+  double get maxExtent => 150;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 20.h),
+      alignment: Alignment.bottomCenter,
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Search...',
+          prefixIcon: Icon(Icons.search),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(_SearchBarDelegate oldDelegate) => false;
 }

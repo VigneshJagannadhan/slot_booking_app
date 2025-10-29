@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
+import 'package:slot_booking_app/features/auth/presentation/widgets/gradient_background.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
 import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
@@ -44,15 +45,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("SlotBooker", style: AppStyles.ts28C000W400),
-            SizedBox(height: 20.h),
-            CupertinoActivityIndicator(),
-          ],
+      body: GradientBackground(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("MediBook", style: AppStyles.ts28CFFFFFFW400),
+              SizedBox(height: 20.h),
+              CupertinoActivityIndicator(color: Colors.white),
+            ],
+          ),
         ),
       ),
     );

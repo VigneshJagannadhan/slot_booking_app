@@ -7,6 +7,7 @@ import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
+import 'package:slot_booking_app/features/auth/presentation/widgets/gradient_background.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/widgets/doctor_dashboard_item.dart';
 import 'package:slot_booking_app/features/home/presentation/widgets/rounded_shadow_container.dart';
@@ -23,7 +24,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AuthScreenBackground(
+      body: GradientBackground(
         child: Column(
           children: [
             /// APPBAR
@@ -34,7 +35,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                 children: [
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
-                      late String userName;
+                      String? userName;
                       if (state is UserSuccess) {
                         userName = state.user.name ?? '';
                       }
@@ -50,7 +51,10 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                                 'Welcome,',
                                 style: AppStyles.ts12CFFFFFFW400,
                               ),
-                              Text(userName, style: AppStyles.ts14CFFFFFFW600),
+                              Text(
+                                userName ?? '',
+                                style: AppStyles.ts14CFFFFFFW600,
+                              ),
                             ],
                           ),
                         ],
@@ -94,7 +98,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
             ),
 
             /// PLACEHOLDER FOR FUTURE FEATURES
-            AppoinmentsSection(),
+            AppointmentsSection(),
           ],
         ),
       ),
@@ -102,8 +106,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
   }
 }
 
-class AppoinmentsSection extends StatelessWidget {
-  const AppoinmentsSection({super.key});
+class AppointmentsSection extends StatelessWidget {
+  const AppointmentsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -111,16 +115,16 @@ class AppoinmentsSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Next Appoinment', style: AppStyles.ts24CFFFFFFW600),
+        Text('Next Appointment', style: AppStyles.ts24CFFFFFFW600),
         SizedBox(height: 10.h),
-        AppoinmentItem(),
+        AppointmentItem(),
       ],
     );
   }
 }
 
-class AppoinmentItem extends StatelessWidget {
-  const AppoinmentItem({super.key});
+class AppointmentItem extends StatelessWidget {
+  const AppointmentItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -186,11 +190,11 @@ class DoctorDashboard extends StatelessWidget {
         SizedBox(height: 10.h),
         Column(
           children: [
-            DoctorDashBoardItem(header: 'Total appoinments today', count: 15),
+            DoctorDashBoardItem(header: 'Total Appointments today', count: 15),
             SizedBox(height: 10.h),
-            DoctorDashBoardItem(header: 'Pending appoinments', count: 12),
+            DoctorDashBoardItem(header: 'Pending Appointments', count: 12),
             SizedBox(height: 10.h),
-            DoctorDashBoardItem(header: 'Completed appoinments', count: 3),
+            DoctorDashBoardItem(header: 'Completed Appointments', count: 3),
           ],
         ),
         SizedBox(height: 20.h),

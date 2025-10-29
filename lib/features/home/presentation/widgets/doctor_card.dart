@@ -17,7 +17,7 @@ class DoctorCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.shade300,
+            color: Colors.black12,
             blurRadius: 10,
             spreadRadius: 1,
             offset: Offset(0, 5),
@@ -33,7 +33,9 @@ class DoctorCard extends StatelessWidget {
             backgroundColor: AppColors.primaryColor,
             radius: 30.r,
             child: Text(
-              (doctor.name ?? 'User name').split('').first,
+              doctor.name?.isNotEmpty == true
+                  ? doctor.name![0].toUpperCase()
+                  : '?',
               style: AppStyles.ts24CFFFFFFW800,
             ),
           ),
@@ -47,7 +49,7 @@ class DoctorCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        doctor.name ?? 'User name',
+                        doctor.name ?? 'Unknown',
                         style: AppStyles.ts14C000W600,
                       ),
                     ),
