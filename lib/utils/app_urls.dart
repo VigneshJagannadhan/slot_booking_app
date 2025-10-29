@@ -6,4 +6,5 @@ class AppUrls {
   static const String login = 'auth/signin';
   static const String register = 'auth/signup';
   static const String doctors = 'user/doctors';
+  static const String userProfile = 'user/profile';
 }

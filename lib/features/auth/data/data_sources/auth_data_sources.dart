@@ -11,6 +11,7 @@ abstract class AuthRemoteDataSource {
     bool isDoctor,
     String? hospital,
   );
+  Future<UserModel> getUser();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -45,5 +46,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       },
     );
     return TokenModel.fromJson(response.data);
+  }
+
+  @override
+  Future<UserModel> getUser() async {
+    final response = await client.get(AppUrls.userProfile);
+    return UserModel.fromJson(response.data);
   }
 }

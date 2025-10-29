@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sources.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:slot_booking_app/features/auth/domain/usecases/get_user_usecase.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/register_usecase.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -78,9 +79,17 @@ Future<void> initDependencies() async {
     () => GetDoctorsUseCase(sl<DoctorRepository>()),
   );
 
+  sl.registerLazySingleton<GetUserUseCase>(
+    () => GetUserUseCase(repository: sl<AuthRepository>()),
+  );
+
   // Blocs
   sl.registerFactory<AuthBloc>(
-    () => AuthBloc(login: sl<LoginUseCase>(), register: sl<RegisterUseCase>()),
+    () => AuthBloc(
+      login: sl<LoginUseCase>(),
+      register: sl<RegisterUseCase>(),
+      getUser: sl<GetUserUseCase>(),
+    ),
   );
 
   sl.registerFactory<DoctorBloc>(
