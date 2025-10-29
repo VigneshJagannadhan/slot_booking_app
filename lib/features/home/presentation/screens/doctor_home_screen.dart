@@ -173,19 +173,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       ),
     );
   }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 120.w,
-          child: Text('$label:', style: AppStyles.ts14C000W600),
-        ),
-        Expanded(child: Text(value, style: AppStyles.ts14C000W400)),
-      ],
-    );
-  }
 }
 
 class DoctorDashBoardItem extends StatelessWidget {
