@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart';
@@ -96,6 +97,62 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                 DoctorDashBoardItem(header: 'Completed', count: 3),
               ],
             ),
+            SizedBox(height: 20.h),
+
+            // Font Comparison Section
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Font Comparison Test', style: AppStyles.ts18C000W700),
+                  SizedBox(height: 10.h),
+                  Text(
+                    'AppStyles (Montserrat):',
+                    style: AppStyles.ts16C000W600,
+                  ),
+                  Text(
+                    'This text uses AppStyles.ts16C000W600',
+                    style: AppStyles.ts16C000W600,
+                  ),
+                  SizedBox(height: 10.h),
+                  Text(
+                    'Direct Montserrat:',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    'This text uses GoogleFonts.montserrat directly',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  Text(
+                    'System Default:',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    'This text uses system default font',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             SizedBox(height: 20.h),
             Column(
               children: [

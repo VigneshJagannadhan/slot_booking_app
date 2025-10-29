@@ -53,4 +53,11 @@ class AppValidators {
     }
     return null;
   }
+
+  static String? validateDesignation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Designation is required';
+    }
+    return null;
+  }
 }

@@ -8,7 +8,6 @@ import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart'
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/custom_text_form_field.dart';
-import 'package:slot_booking_app/features/auth/presentation/widgets/liquid_glass_background.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/password_text_form_field.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/home_screen.dart';
@@ -27,8 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _hospitalOrClinicController =
-      TextEditingController();
+  final TextEditingController _hospitalController = TextEditingController();
+  final TextEditingController _designationController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPassController = TextEditingController();
   final ValueNotifier<bool> _isInLoginMode = ValueNotifier<bool>(true);
@@ -40,6 +39,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPassController.dispose();
+    _hospitalController.dispose();
+    _designationController.dispose();
     _isInLoginMode.dispose();
     _isDoctor.dispose();
     super.dispose();
@@ -62,130 +63,113 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: AppStyles.ts28CFFFFFFW600,
                   ),
                   SizedBox(height: 30.h),
-                  LiquidGlassBackground(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (!isInLoginMode)
-                          CustomTextFormField(
-                            labelText: 'Name',
-                            hintText: 'Enter your name',
-                            prefixIcon: Icons.person,
-                            controller: _nameController,
-                            validator: AppValidators.validateName,
-                          ),
-                        SizedBox(height: 20.h),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!isInLoginMode)
                         CustomTextFormField(
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
-                          prefixIcon: Icons.email,
-                          controller: _emailController,
-                          validator: AppValidators.validateEmail,
+                          labelText: 'Name',
+                          hintText: 'Enter your name',
+                          prefixIcon: Icons.person,
+                          controller: _nameController,
+                          validator: AppValidators.validateName,
                         ),
-                        if (!isInLoginMode) SizedBox(height: 20.h),
-                        if (!isInLoginMode)
-                          ValueListenableBuilder<bool>(
-                            valueListenable: _isDoctor,
-                            builder: (context, isDoctor, _) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 1.sw,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.r),
-                                      color: Colors.white,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 20.w,
-                                      vertical: 10.h,
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Are you a doctor?",
-                                          style: AppStyles.ts12C000W400,
-                                        ),
-                                        SizedBox(width: 20.w),
-                                        Switch.adaptive(
-                                          value: isDoctor,
-                                          onChanged: (v) {
-                                            _isDoctor.value = v;
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                      SizedBox(height: 20.h),
+                      CustomTextFormField(
+                        labelText: 'Email',
+                        hintText: 'Enter your email',
+                        prefixIcon: Icons.email,
+                        controller: _emailController,
+                        validator: AppValidators.validateEmail,
+                      ),
+                      if (!isInLoginMode) SizedBox(height: 20.h),
+                      if (!isInLoginMode)
+                        ValueListenableBuilder<bool>(
+                          valueListenable: _isDoctor,
+                          builder: (context, isDoctor, _) {
+                            return Column(
+                              children: [
+                                CustomSwitchButton(
+                                  value: _isDoctor,
+                                  label: 'Are you  doctor',
+                                  icon: Icons.local_hospital_outlined,
+                                ),
+                                if (_isDoctor.value) SizedBox(height: 20.h),
+                                if (_isDoctor.value)
+                                  CustomTextFormField(
+                                    labelText: 'Designation',
+                                    hintText: '',
+                                    prefixIcon: Icons.medical_services,
+                                    controller: _designationController,
+                                    validator:
+                                        AppValidators.validateDesignation,
                                   ),
-                                  if (_isDoctor.value) SizedBox(height: 20.h),
-                                  if (_isDoctor.value)
-                                    CustomTextFormField(
-                                      labelText: 'Hospital or Clinic',
-                                      hintText: '',
-                                      prefixIcon: Icons.local_hospital,
-                                      controller: _hospitalOrClinicController,
-                                      validator:
-                                          AppValidators.validateHospitalName,
-                                    ),
-                                ],
-                              );
-                            },
-                          ),
-                        SizedBox(height: 20.h),
-                        PasswordTextFormField(
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
-                          controller: _passwordController,
-                          validator: AppValidators.validatePassword,
-                        ),
-                        if (!isInLoginMode) SizedBox(height: 20.h),
-                        if (!isInLoginMode)
-                          PasswordTextFormField(
-                            labelText: 'Confirm Password',
-                            hintText: 'Enter your confirm password',
-                            controller: _confirmPassController,
-                            validator:
-                                (value) =>
-                                    AppValidators.validateConfirmPassword(
-                                      value,
-                                      _passwordController.text,
-                                    ),
-                          ),
-                        SizedBox(height: 20.h),
-                        BlocConsumer<AuthBloc, AuthState>(
-                          listener:
-                              (ctx, state) => _authListener(
-                                context: ctx,
-                                state: state,
-                                isInLoginMode: isInLoginMode,
-                              ),
-                          builder: (context, state) {
-                            return PrimaryButton(
-                              isLoading: state is AuthLoading,
-                              label: isInLoginMode ? 'Login' : 'Register',
-                              onPressed:
-                                  () => _onSubmitButtonPressed(
-                                    context: context,
-                                    isInLoginMode: isInLoginMode,
+                                if (_isDoctor.value) SizedBox(height: 20.h),
+                                if (_isDoctor.value)
+                                  CustomTextFormField(
+                                    labelText: 'Hospital or Clinic',
+                                    hintText: '',
+                                    prefixIcon: Icons.local_hospital,
+                                    controller: _hospitalController,
+                                    validator:
+                                        AppValidators.validateHospitalName,
                                   ),
+                              ],
                             );
                           },
                         ),
-                        SizedBox(height: 20.h),
-                        TextButton(
-                          onPressed: () => _onAuthModeButtonPressed(context),
-                          child: Text(
-                            isInLoginMode
-                                ? 'Create an account'
-                                : 'Already have an account? Login',
-                            style: AppStyles.ts12CFFFFFFW400,
-                          ),
+                      SizedBox(height: 20.h),
+                      PasswordTextFormField(
+                        labelText: 'Password',
+                        hintText: 'Enter your password',
+                        controller: _passwordController,
+                        validator: AppValidators.validatePassword,
+                      ),
+                      if (!isInLoginMode) SizedBox(height: 20.h),
+                      if (!isInLoginMode)
+                        PasswordTextFormField(
+                          labelText: 'Confirm Password',
+                          hintText: 'Enter your confirm password',
+                          controller: _confirmPassController,
+                          validator:
+                              (value) => AppValidators.validateConfirmPassword(
+                                value,
+                                _passwordController.text,
+                              ),
                         ),
-                      ],
-                    ),
+                      SizedBox(height: 20.h),
+                      BlocConsumer<AuthBloc, AuthState>(
+                        listener:
+                            (ctx, state) => _authListener(
+                              context: ctx,
+                              state: state,
+                              isInLoginMode: isInLoginMode,
+                            ),
+                        builder: (context, state) {
+                          return PrimaryButton(
+                            isLoading: state is AuthLoading,
+                            label: isInLoginMode ? 'Login' : 'Register',
+                            onPressed:
+                                () => _onSubmitButtonPressed(
+                                  context: context,
+                                  isInLoginMode: isInLoginMode,
+                                ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: 20.h),
+                      TextButton(
+                        onPressed: () => _onAuthModeButtonPressed(context),
+                        child: Text(
+                          isInLoginMode
+                              ? 'Create an account'
+                              : 'Already have an account? Login',
+                          style: AppStyles.ts12CFFFFFFW400,
+                        ),
+                      ),
+                    ],
                   ),
                   Spacer(),
                 ],
@@ -219,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               email: _emailController.text,
               password: _passwordController.text,
               isDoctor: _isDoctor.value,
-              hospital: _hospitalOrClinicController.text,
+              hospital: _hospitalController.text,
             ),
       );
     }
@@ -250,6 +234,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
         isError: true,
       );
     }
+  }
+}
+
+class CustomSwitchButton extends StatelessWidget {
+  const CustomSwitchButton({
+    super.key,
+    required this.value,
+    required this.label,
+    required this.icon,
+  });
+
+  final ValueNotifier<bool> value;
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 1.sw,
+          height: 45.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            border: Border.all(color: Colors.white),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+          child: Row(
+            children: [
+              Icon(icon, color: Colors.white),
+              SizedBox(width: 15.w),
+              Text(label, style: AppStyles.ts12CFFFFFFW500),
+              Spacer(),
+              Switch.adaptive(
+                value: value.value,
+                onChanged: (v) => value.value = v,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 

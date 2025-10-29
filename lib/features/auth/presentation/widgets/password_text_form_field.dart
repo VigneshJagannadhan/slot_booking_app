@@ -38,14 +38,14 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
           controller: widget.controller,
           validator: widget.validator,
           style: AppStyles.ts12CFFFFFFW500,
-          obscureText: isVisible,
+          obscureText: !isVisible,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             labelText: widget.labelText,
             hintText: widget.hintText,
             labelStyle: AppStyles.ts12CFFFFFFW500,
             hintStyle: AppStyles.ts12CFFFFFFW500,
-            prefixIcon: Icon(Icons.password),
+            prefixIcon: Icon(Icons.password, color: Colors.white),
             suffixIcon: GestureDetector(
               onTap: () => _isVisible.value = !_isVisible.value,
               child: Icon(
@@ -54,14 +54,14 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
               ),
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(20.r),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(20.r),
               borderSide: BorderSide(color: Colors.grey[300]!),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(20.r),
               borderSide: BorderSide(color: Theme.of(context).primaryColor),
             ),
           ),
