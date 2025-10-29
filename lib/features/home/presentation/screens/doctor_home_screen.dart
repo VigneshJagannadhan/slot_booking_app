@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart';
@@ -9,6 +8,8 @@ import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
+import 'package:slot_booking_app/features/home/presentation/widgets/doctor_dashboard_item.dart';
+import 'package:slot_booking_app/features/home/presentation/widgets/rounded_shadow_container.dart';
 
 class DoctorHomeScreen extends StatefulWidget {
   static const String route = 'doctor_home';
@@ -88,72 +89,20 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
           children: [
             Text('Doctor Dashboard', style: AppStyles.ts24C000W600),
             SizedBox(height: 10.h),
-            Row(
+            Column(
               children: [
-                DoctorDashBoardItem(header: 'Total', count: 15),
-                SizedBox(width: 10.w),
-                DoctorDashBoardItem(header: 'Pending', count: 12),
-                SizedBox(width: 10.w),
-                DoctorDashBoardItem(header: 'Completed', count: 3),
+                DoctorDashBoardItem(
+                  header: 'Total appoinments today',
+                  count: 15,
+                ),
+                SizedBox(height: 10.h),
+                DoctorDashBoardItem(header: 'Pending appoinments', count: 12),
+                SizedBox(height: 10.h),
+                DoctorDashBoardItem(header: 'Completed appoinments', count: 3),
               ],
             ),
             SizedBox(height: 20.h),
 
-            // Font Comparison Section
-            Container(
-              padding: EdgeInsets.all(16.w),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Font Comparison Test', style: AppStyles.ts18C000W700),
-                  SizedBox(height: 10.h),
-                  Text(
-                    'AppStyles (Montserrat):',
-                    style: AppStyles.ts16C000W600,
-                  ),
-                  Text(
-                    'This text uses AppStyles.ts16C000W600',
-                    style: AppStyles.ts16C000W600,
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    'Direct Montserrat:',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    'This text uses GoogleFonts.montserrat directly',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    'System Default:',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    'This text uses system default font',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 20.h),
             Column(
               children: [
                 PrimaryButton(onPressed: () {}, label: 'Manage Appointments'),
@@ -168,11 +117,12 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
 
             SizedBox(height: 10.h),
 
-            Expanded(
+            Flexible(
               child: ListView.builder(
                 itemCount: 1,
                 itemBuilder:
                     (context, index) => RoundedContainerWithShadow(
+                      padding: EdgeInsets.all(15.r),
                       child: Column(
                         children: [
                           Row(
@@ -228,58 +178,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class DoctorDashBoardItem extends StatelessWidget {
-  const DoctorDashBoardItem({
-    super.key,
-    required this.header,
-    required this.count,
-  });
-
-  final String header;
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: RoundedContainerWithShadow(
-        child: Column(
-          children: [
-            Text(header, style: AppStyles.ts14C000W600),
-            SizedBox(height: 10.h),
-            Text(count.toString(), style: AppStyles.ts24C000W600),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RoundedContainerWithShadow extends StatelessWidget {
-  const RoundedContainerWithShadow({super.key, required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 15.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
-            spreadRadius: 3,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: child,
     );
   }
 }

@@ -36,7 +36,8 @@ class AuthRepositoryImpl implements AuthRepository {
     String email,
     String password,
     bool isDoctor,
-    String hospital,
+    String? hospital,
+    String? designation,
   ) async {
     if (!await networkInfo.isConnected) {
       return const Left(NetworkFailure('No internet'));
@@ -48,6 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
         password,
         isDoctor,
         hospital,
+        designation,
       );
       return Right(dto.toDomain());
     } on DioException catch (e) {

@@ -10,7 +10,8 @@ abstract class AuthRepository {
     String email,
     String password,
     bool isDoctor,
-    String hospital,
+    String? hospital,
+    String? designation,
   );
 
   Future<Either<Failure, UserEntity>> getUser();

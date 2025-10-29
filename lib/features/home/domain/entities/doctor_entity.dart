@@ -1,16 +1,20 @@
 class Doctor {
-  final String id;
-  final String name;
-  final String hospitalOrClinic;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String? id;
+  final String? name;
+  final String? hospitalOrClinic;
+  final num? rating;
+  final String? designation;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   const Doctor({
-    required this.id,
-    required this.name,
-    required this.hospitalOrClinic,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.name,
+    this.hospitalOrClinic,
+    this.rating,
+    this.designation,
+    this.createdAt,
+    this.updatedAt,
   });
 
   @override

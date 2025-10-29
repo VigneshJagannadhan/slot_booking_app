@@ -204,6 +204,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               password: _passwordController.text,
               isDoctor: _isDoctor.value,
               hospital: _hospitalController.text,
+              designation: _designationController.text,
             ),
       );
     }

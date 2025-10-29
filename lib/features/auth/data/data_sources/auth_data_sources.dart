@@ -10,6 +10,7 @@ abstract class AuthRemoteDataSource {
     String password,
     bool isDoctor,
     String? hospital,
+    String? designation,
   );
   Future<UserModel> getUser();
 }
@@ -34,6 +35,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     String password,
     bool isDoctor,
     String? hospital,
+    String? designation,
   ) async {
     final response = await client.post(
       AppUrls.register,
@@ -42,7 +44,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'email': email,
         'password': password,
         'isDoctor': isDoctor,
-        'hospitalOrClinic': hospital,
+        if (hospital != null) 'hospitalOrClinic': hospital,
+        if (designation != null) 'designation': designation,
       },
     );
     return TokenModel.fromJson(response.data);

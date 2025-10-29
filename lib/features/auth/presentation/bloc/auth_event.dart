@@ -22,16 +22,26 @@ class RegisterRequested extends AuthEvent {
   final String password;
   final bool isDoctor;
   final String hospital;
+  final String designation;
+
   const RegisterRequested({
     required this.name,
     required this.email,
     required this.password,
     required this.isDoctor,
     required this.hospital,
+    required this.designation,
   });
 
   @override
-  List<Object?> get props => [name, email, password, isDoctor, hospital];
+  List<Object?> get props => [
+    name,
+    email,
+    password,
+    isDoctor,
+    hospital,
+    designation,
+  ];
 }
 
 class LogoutRequested extends AuthEvent {

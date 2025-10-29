@@ -45,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       e.password,
       e.isDoctor,
       e.hospital,
+      e.designation,
     );
     result.fold((f) => emit(AuthFailure(f)), (token) async {
       emit(AuthSuccess(token));
