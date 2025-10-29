@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return isDoctor ? DoctorHomeScreen() : UserHomeScreen();
           }
+
           return const Center(child: CupertinoActivityIndicator());
         },
       ),
