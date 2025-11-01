@@ -1,8 +1,9 @@
 import 'package:slot_booking_app/core/services/api_service.dart';
+import 'package:slot_booking_app/features/auth/data/models/user_model.dart';
 import 'package:slot_booking_app/utils/app_urls.dart';
 import '../models/token_model.dart';
 
-abstract class AuthRemoteDataSource {
+abstract class AuthDataSource {
   Future<TokenModel> login(String email, String password);
   Future<TokenModel> register(
     String name,
@@ -15,9 +16,9 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> getUser();
 }
 
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+class AuthDataSourceImpl implements AuthDataSource {
   final ApiClient client;
-  AuthRemoteDataSourceImpl(this.client);
+  AuthDataSourceImpl(this.client);
 
   @override
   Future<TokenModel> login(String email, String password) async {

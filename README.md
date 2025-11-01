@@ -1,209 +1,117 @@
-# 🎯 Slot Booking App
+# 🎯 MediBook - Slot Booking App
 
-A modern Flutter application demonstrating advanced mobile development skills with clean architecture, state management, and professional UI/UX design patterns.
+A Flutter-based medical appointment booking system that enables patients to book appointments with doctors and manage their healthcare scheduling.
 
-> **🚧 Project Status: In Progress** - This is an ongoing portfolio project showcasing modern Flutter development practices and clean architecture implementation.
+## 📋 About
 
-## 🚀 Features
+MediBook is a cross-platform mobile application built with Flutter that connects patients with healthcare providers. The app features user authentication, doctor listings, appointment management, and a clean, responsive user interface designed for both patients and doctors.
 
-> **📋 Current Implementation Status**: Authentication system is fully implemented with registration, login, and form validation. Additional features like slot booking, calendar integration, and admin dashboard are planned for future development.
+## 🏗️ Architecture
 
-### 🔐 Authentication System
-- **User Registration & Login** with comprehensive form validation
-- **Secure Password Requirements** with regex validation
-- **JWT Token Management** with persistent storage
-- **Error Handling** with user-friendly feedback
+The app follows **Clean Architecture** principles with a clear separation of concerns:
 
-### 🏗️ Architecture & Design Patterns
-- **Clean Architecture** with separation of concerns
-- **BLoC Pattern** for state management
-- **Repository Pattern** for data abstraction
-- **Dependency Injection** for loose coupling
-- **Custom Widgets** for reusable UI components
+- **Presentation Layer**: BLoC pattern for state management, screens, and UI components
+- **Domain Layer**: Business logic, entities, repository interfaces, and use cases
+- **Data Layer**: Repository implementations, data sources, and data models
 
-### 🎨 UI/UX Excellence
-- **Responsive Design** with Flutter ScreenUtil
-- **Custom Typography System** with consistent styling
-- **Material Design 3** implementation
-- **Form Validation** with real-time feedback
-- **Loading States** and error handling
+Each feature is organized into these three layers, ensuring maintainability, testability, and scalability.
 
-## 🛠️ Technical Stack
-
-### Core Technologies
-- **Flutter 3.7.2+** - Cross-platform mobile development
-- **Dart** - Programming language
-- **Material Design 3** - Modern UI components
-
-### State Management & Architecture
-- **Flutter BLoC** - Predictable state management
-- **Repository Pattern** - Data layer abstraction
-- **Dependency Injection** - Loose coupling
-
-### Networking & Data
-- **Dio** - HTTP client with interceptors
-- **SharedPreferences** - Local data persistence
-- **JSON Serialization** - Data model handling
-
-### UI/UX Libraries
-- **Flutter ScreenUtil** - Responsive design
-- **Custom Styling System** - Consistent typography
-
-## 📱 Project Structure
+## 📁 Project Structure
 
 ```
 lib/
-├── features/
-│   ├── auth/
-│   │   ├── bloc/           # State management
-│   │   ├── data/           # Data layer
-│   │   └── presentation/   # UI layer
-│   └── home/
-│       └── presentation/    # Home screen
-├── helpers/                # Utility classes
-├── models/                 # Data models
-├── services/               # API services
-└── utils/                  # App utilities
+├── features/              # Feature-based modules
+│   ├── auth/             # Authentication (login, register, user management)
+│   ├── appointments/     # Appointment CRUD operations
+│   └── home/             # Doctor listings and home screens
+│
+├── core/                 # Core functionality
+│   ├── di/              # Dependency injection (GetIt)
+│   ├── routes/          # App navigation
+│   ├── services/        # API client
+│   ├── helpers/         # Utility helpers
+│   └── themes/          # App styling and themes
+│
+└── utils/               # Shared utilities and constants
 ```
 
-## 🎯 Key Skills Demonstrated
+## 🚀 Features
 
-### 🏗️ Software Architecture
-- **Clean Architecture** implementation
-- **SOLID Principles** adherence
-- **Separation of Concerns**
-- **Dependency Inversion**
+- **Authentication**: User registration, login with JWT token management
+- **Role-Based Access**: Separate interfaces for patients and doctors
+- **Doctor Listings**: Browse available doctors with pagination
+- **Appointment Management**: Create, read, update, and delete appointments
+- **Error Handling**: Comprehensive error handling with user-friendly messages
+- **Offline Support**: Network connectivity detection
+- **Secure Storage**: JWT tokens stored using Flutter Secure Storage
 
-### 📱 Flutter Development
-- **Widget Composition** and reusability
-- **State Management** with BLoC pattern
-- **Navigation** and routing
-- **Form Handling** and validation
-- **Error Handling** and user feedback
+## 🛠️ Tech Stack
 
-### 🔧 Backend Integration
-- **RESTful API** integration
-- **HTTP Client** configuration
-- **Token-based Authentication**
-- **Error Handling** and retry logic
+**Core**
+- Flutter 3.7.2+
+- Dart
 
-### 🎨 UI/UX Design
-- **Responsive Design** principles
-- **Custom Component** development
-- **Typography System** implementation
-- **Form Validation** UX
-- **Loading States** and feedback
+**State Management**
+- flutter_bloc
+
+**Networking**
+- Dio
+- connectivity_plus
+
+**Dependency Injection**
+- get_it
+
+**Local Storage**
+- shared_preferences
+- flutter_secure_storage
+
+**UI/UX**
+- flutter_screenutil
+- lottie
+- google_fonts
+
+**Utilities**
+- fpdart
+- equatable
+- flutter_dotenv
+
+## 🏛️ Architecture Pattern
+
+- **Clean Architecture**: Three-layer architecture (Presentation, Domain, Data)
+- **BLoC Pattern**: Predictable state management
+- **Repository Pattern**: Data layer abstraction
+- **Dependency Injection**: Service locator pattern with GetIt
+- **SOLID Principles**: Applied throughout the codebase
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Flutter SDK 3.7.2 or higher
+- Flutter SDK 3.29.3 or higher
 - Dart SDK
-- Android Studio / VS Code
-- Git
 
 ### Installation
 
-1. **Clone the repository**
+1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/slot_booking_app.git
+   git clone <repository-url>
    cd slot_booking_app
    ```
 
-2. **Install dependencies**
+2. Install dependencies
    ```bash
    flutter pub get
    ```
 
-3. **Run the application**
+3. Create `.env` file in root directory
+   ```
+   BASE_URL=your_api_url_here
+   ```
+
+4. Run the application
    ```bash
    flutter run
    ```
 
-### Configuration
-
-1. **Update API endpoints** in `lib/utils/app_urls.dart`
-2. **Configure backend server** to match the API endpoints
-3. **Update authentication endpoints** as needed
-
-## 📋 API Endpoints
-
-The application expects the following backend endpoints:
-
-- `POST /auth/signin` - User login
-- `POST /auth/signup` - User registration
-
-## 🎨 Design System
-
-### Typography
-- **Comprehensive Text Styles** with consistent sizing
-- **Font Weight Variations** (400, 500, 600, 700, 800)
-- **Color Schemes** (Black, White)
-- **Responsive Sizing** with ScreenUtil
-
-### Components
-- **Custom TextFormField** with validation
-- **Primary Button** with consistent styling
-- **Loading Indicators** and error states
-
-## 🔒 Security Features
-
-- **Password Validation** with strong requirements
-- **JWT Token Management** for secure authentication
-- **Input Sanitization** and validation
-- **Secure Storage** of sensitive data
-
-## 🧪 Testing
-
-The project includes comprehensive testing setup:
-- **Unit Tests** for business logic
-- **Widget Tests** for UI components
-- **Integration Tests** for user flows
-
-## 📱 Platform Support
-
-- ✅ **Android** - Full support
-- ✅ **iOS** - Full support
-- ✅ **Web** - Responsive design
-- ✅ **Desktop** - Cross-platform compatibility
-
-## 🚀 Performance Optimizations
-
-- **Lazy Loading** of components
-- **Efficient State Management** with BLoC
-- **Memory Management** best practices
-- **Responsive Design** for all screen sizes
-
-## 🔧 Development Tools
-
-- **Flutter Lints** for code quality
-- **Dart Analysis** for static analysis
-- **Hot Reload** for rapid development
-- **Debug Tools** for performance monitoring
-
-## 📈 Future Enhancements
-
-- **Push Notifications** for booking reminders
-- **Calendar Integration** for slot management
-- **Payment Integration** for booking fees
-- **Admin Dashboard** for slot management
-- **Real-time Updates** with WebSocket integration
-
-## 🤝 Contributing
-
-This is a portfolio project demonstrating professional Flutter development skills. The codebase showcases:
-
-- **Clean Code** principles
-- **Professional Architecture** patterns
-- **Best Practices** implementation
-- **Scalable Design** for future enhancements
-
-## 📄 License
-
-This project is part of a professional portfolio demonstrating advanced Flutter development skills and clean architecture implementation.
+This project is part of a portfolio demonstrating professional Flutter development skills and clean architecture implementation.
 
 ---
-
-**Built with ❤️ using Flutter & Dart**
-
-*Demonstrating professional mobile development skills with modern architecture patterns and best practices.*

@@ -1,4 +1,4 @@
-class Appointment {
+class AppointmentEntity {
   final String? id;
   final String? name;
   final String? phone;
@@ -6,7 +6,7 @@ class Appointment {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const Appointment({
+  const AppointmentEntity({
     this.id,
     this.name,
     this.phone,
@@ -29,7 +29,7 @@ class Appointment {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is Appointment &&
+    return other is AppointmentEntity &&
         other.id == id &&
         other.name == name &&
         other.phone == phone &&

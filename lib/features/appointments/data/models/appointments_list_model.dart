@@ -1,15 +1,15 @@
-import 'package:slot_booking_app/features/appointments/data/models/appointment_dto.dart';
+import 'package:slot_booking_app/features/appointments/data/models/appointment_model.dart';
 import 'package:slot_booking_app/features/appointments/domain/entities/appointments_list_entity.dart';
 
-class AppointmentListDto {
-  final List<AppointmentDto> appointments;
+class AppointmentListModel {
+  final List<AppointmentModel> appointments;
   final int currentPage;
   final int totalPages;
   final int totalAppointments;
   final bool hasNextPage;
   final bool hasPrevPage;
 
-  AppointmentListDto({
+  AppointmentListModel({
     required this.appointments,
     required this.currentPage,
     required this.totalPages,
@@ -18,12 +18,12 @@ class AppointmentListDto {
     required this.hasPrevPage,
   });
 
-  factory AppointmentListDto.fromJson(Map<String, dynamic> json) {
-    return AppointmentListDto(
+  factory AppointmentListModel.fromJson(Map<String, dynamic> json) {
+    return AppointmentListModel(
       appointments:
           (json['appointments'] as List<dynamic>?)
               ?.map(
-                (appointmentJson) => AppointmentDto.fromJson(appointmentJson),
+                (appointmentJson) => AppointmentModel.fromJson(appointmentJson),
               )
               .toList() ??
           [],
@@ -35,8 +35,8 @@ class AppointmentListDto {
     );
   }
 
-  AppointmentList toDomain() {
-    return AppointmentList(
+  AppointmentListEntity toDomain() {
+    return AppointmentListEntity(
       appointments: appointments.map((dto) => dto.toDomain()).toList(),
       currentPage: currentPage,
       totalPages: totalPages,

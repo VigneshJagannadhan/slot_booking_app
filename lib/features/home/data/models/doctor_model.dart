@@ -31,8 +31,8 @@ class DoctorDto {
     );
   }
 
-  Doctor toDomain() {
-    return Doctor(
+  DoctorEntity toDomain() {
+    return DoctorEntity(
       id: id,
       name: name,
       hospitalOrClinic: hospitalOrClinic,

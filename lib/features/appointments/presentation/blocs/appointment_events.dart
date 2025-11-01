@@ -11,7 +11,7 @@ class AppointmentEvents extends Equatable {
 class LoadAppointment extends AppointmentEvents {}
 
 class CreateAppointment extends AppointmentEvents {
-  final Appointment appointment;
+  final AppointmentEntity appointment;
 
   const CreateAppointment({required this.appointment});
 
@@ -20,7 +20,7 @@ class CreateAppointment extends AppointmentEvents {
 }
 
 class UpdateAppointment extends AppointmentEvents {
-  final Appointment appointment;
+  final AppointmentEntity appointment;
 
   const UpdateAppointment({required this.appointment});
 

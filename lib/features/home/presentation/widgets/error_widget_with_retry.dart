@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slot_booking_app/core/constants/app_constants.dart';
-import 'package:slot_booking_app/core/helpers/network_helper.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/primary_button.dart';
 
@@ -28,7 +27,7 @@ class ErrorWidgetWithRetry extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 40.w),
             child: Text(
-              NetworkHelper.handleNetworkErrMsg(errorMessage),
+              errorMessage,
               style: AppStyles.ts12CFFFFFFW400,
               textAlign: TextAlign.center,
             ),

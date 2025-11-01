@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:slot_booking_app/core/helpers/network_helper.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_bloc.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_events.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_state.dart';
@@ -42,9 +41,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       if (state is AppointmentFailure) {
                         SnackbarHelper.showSnackbar(
                           context: context,
-                          message: NetworkHelper.handleNetworkErrMsg(
-                            state.message,
-                          ),
+                          message: state.message,
                           isError: true,
                         );
                       }

@@ -1,25 +1,9 @@
-class Token {
+import 'package:slot_booking_app/features/auth/domain/entities/user_entity.dart';
+
+class TokenEntity {
   final String? token;
   final String? refreshToken;
-  final User? user;
+  final UserEntity? user;
 
-  const Token({this.token, this.refreshToken, this.user});
-}
-
-class User {
-  final String? id;
-  final String? name;
-  final String? email;
-  final String? role;
-  final bool? isDoctor;
-  final String? hospitalOrClinic;
-
-  const User({
-    this.id,
-    this.name,
-    this.email,
-    this.role,
-    this.isDoctor,
-    this.hospitalOrClinic,
-  });
+  const TokenEntity({this.token, this.refreshToken, this.user});
 }

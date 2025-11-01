@@ -33,8 +33,8 @@ class DoctorListDto {
     );
   }
 
-  DoctorList toDomain() {
-    return DoctorList(
+  DoctorListEntity toDomain() {
+    return DoctorListEntity(
       doctors: doctors.map((dto) => dto.toDomain()).toList(),
       currentPage: currentPage,
       totalPages: totalPages,

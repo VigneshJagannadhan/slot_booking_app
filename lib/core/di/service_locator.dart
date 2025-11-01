@@ -3,10 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:slot_booking_app/features/appointments/data/data_sources/appointment_data_source.dart';
-import 'package:slot_booking_app/features/appointments/domain/repositories/appintment_repository.dart';
+import 'package:slot_booking_app/features/appointments/domain/repositories/appointment_repository.dart';
+import 'package:slot_booking_app/features/appointments/data/repositories/appointment_repository_impl.dart';
 import 'package:slot_booking_app/features/appointments/domain/usecases/appointment_usecase.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_bloc.dart';
-import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
+import 'package:slot_booking_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sources.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:slot_booking_app/features/auth/domain/usecases/get_user_usecase.dart';
@@ -16,7 +17,8 @@ import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart'
 import 'package:slot_booking_app/core/helpers/network_info_helper.dart';
 import 'package:slot_booking_app/core/services/api_service.dart';
 import 'package:slot_booking_app/features/home/data/data_sources/doctor_remote_data_source.dart';
-import 'package:slot_booking_app/features/home/data/repositories/doctor_repository.dart';
+import 'package:slot_booking_app/features/home/domain/repositories/doctor_repository.dart';
+import 'package:slot_booking_app/features/home/data/repositories/doctor_repository_impl.dart';
 import 'package:slot_booking_app/features/home/domain/usecases/get_doctors_usecase.dart';
 import 'package:slot_booking_app/features/home/presentation/bloc/doctor_bloc.dart';
 
@@ -59,8 +61,8 @@ Future<void> initDependencies() async {
   ///                           DATA SOURCES                            ///
   ///-------------------------------------------------------------------///
 
-  sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(sl<ApiClient>()),
+  sl.registerLazySingleton<AuthDataSource>(
+    () => AuthDataSourceImpl(sl<ApiClient>()),
   );
 
   sl.registerLazySingleton<DoctorRemoteDataSource>(
@@ -76,7 +78,7 @@ Future<void> initDependencies() async {
   ///-------------------------------------------------------------------///
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
-      remote: sl<AuthRemoteDataSource>(),
+      remote: sl<AuthDataSource>(),
       networkInfo: sl<NetworkInfo>(),
     ),
   );

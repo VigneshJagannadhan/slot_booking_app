@@ -10,7 +10,7 @@ class AppointmentState extends Equatable {
 class AppointmentInitial extends AppointmentState {}
 
 class AppointmentsLoaded extends AppointmentState {
-  final List<Appointment> appointments;
+  final List<AppointmentEntity> appointments;
   final int currentPage;
   final int totalPages;
   final bool hasNextPage;
@@ -46,7 +46,7 @@ class AppointmentFailure extends AppointmentState {
 }
 
 class AppointmentCreated extends AppointmentState {
-  final Appointment appointment;
+  final AppointmentEntity appointment;
 
   const AppointmentCreated({required this.appointment});
 
@@ -55,7 +55,7 @@ class AppointmentCreated extends AppointmentState {
 }
 
 class AppointmentUpdated extends AppointmentState {
-  final Appointment appointment;
+  final AppointmentEntity appointment;
 
   const AppointmentUpdated({required this.appointment});
 

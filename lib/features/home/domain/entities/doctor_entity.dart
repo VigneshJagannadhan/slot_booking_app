@@ -1,4 +1,4 @@
-class Doctor {
+class DoctorEntity {
   final String? id;
   final String? name;
   final String? hospitalOrClinic;
@@ -7,7 +7,7 @@ class Doctor {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  const Doctor({
+  const DoctorEntity({
     this.id,
     this.name,
     this.hospitalOrClinic,
@@ -20,7 +20,7 @@ class Doctor {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is Doctor &&
+    return other is DoctorEntity &&
         other.id == id &&
         other.name == name &&
         other.hospitalOrClinic == hospitalOrClinic;

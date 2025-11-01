@@ -14,7 +14,7 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final Token token;
+  final TokenEntity token;
   const AuthSuccess(this.token);
   @override
   List<Object?> get props => [token];

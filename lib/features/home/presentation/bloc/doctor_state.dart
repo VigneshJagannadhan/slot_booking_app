@@ -16,7 +16,7 @@ class DoctorLoading extends DoctorState {
 }
 
 class DoctorLoaded extends DoctorState {
-  final List<Doctor> doctors;
+  final List<DoctorEntity> doctors;
   final int currentPage;
   final int totalPages;
   final bool hasNextPage;
@@ -41,7 +41,7 @@ class DoctorLoaded extends DoctorState {
 }
 
 class DoctorLoadingMore extends DoctorState {
-  final List<Doctor> doctors;
+  final List<DoctorEntity> doctors;
 
   const DoctorLoadingMore(this.doctors);
 

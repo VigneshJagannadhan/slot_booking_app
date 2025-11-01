@@ -1,6 +1,6 @@
 import 'package:slot_booking_app/features/appointments/domain/entities/appointments_entity.dart';
 
-class AppointmentDto {
+class AppointmentModel {
   final String? id;
   final String? name;
   final String? phone;
@@ -8,7 +8,7 @@ class AppointmentDto {
   final String? createdAt;
   final String? updatedAt;
 
-  AppointmentDto({
+  AppointmentModel({
     this.id,
     this.name,
     this.phone,
@@ -17,8 +17,8 @@ class AppointmentDto {
     this.updatedAt,
   });
 
-  factory AppointmentDto.fromJson(Map<String, dynamic> json) {
-    return AppointmentDto(
+  factory AppointmentModel.fromJson(Map<String, dynamic> json) {
+    return AppointmentModel(
       id: json['id'],
       name: json['name'],
       phone: json['phone'],
@@ -39,8 +39,8 @@ class AppointmentDto {
     };
   }
 
-  Appointment toDomain() {
-    return Appointment(
+  AppointmentEntity toDomain() {
+    return AppointmentEntity(
       id: id,
       name: name,
       phone: phone,
@@ -50,8 +50,8 @@ class AppointmentDto {
     );
   }
 
-  static AppointmentDto fromDomain(Appointment appointment) {
-    return AppointmentDto(
+  static AppointmentModel fromDomain(AppointmentEntity appointment) {
+    return AppointmentModel(
       id: appointment.id,
       name: appointment.name,
       phone: appointment.phone,

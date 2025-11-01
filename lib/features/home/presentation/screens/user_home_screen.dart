@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
-import 'package:slot_booking_app/core/helpers/network_helper.dart';
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/features/auth/domain/entities/user_entity.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
@@ -75,7 +74,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     if (state is AuthInitial || state is AuthFailure) {
                       NavigationHelper.pushAndReplaceNamed(
                         context: context,
-                        destination: RegisterScreen.route,
+                        destination: AuthScreen.route,
                       );
                     }
                   },
@@ -114,7 +113,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 if (state is DoctorFailure) {
                   SnackbarHelper.showSnackbar(
                     context: context,
-                    message: NetworkHelper.handleNetworkErrMsg(state.message),
+                    message: (state.message),
                     isError: true,
                   );
                 }

@@ -15,15 +15,15 @@ import 'package:slot_booking_app/features/home/presentation/screens/home_screen.
 import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/utils/app_validators.dart';
 
-class RegisterScreen extends StatefulWidget {
-  static const String route = 'register';
-  const RegisterScreen({super.key});
+class AuthScreen extends StatefulWidget {
+  static const String route = 'auth';
+  const AuthScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();

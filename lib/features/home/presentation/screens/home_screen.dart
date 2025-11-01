@@ -8,6 +8,7 @@ import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart
 import 'package:slot_booking_app/features/auth/presentation/screens/register_screen.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/doctor_home_screen.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/user_home_screen.dart';
+import 'package:slot_booking_app/features/home/presentation/widgets/error_widget_with_retry.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String route = 'home';
@@ -30,10 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthInitial || state is AuthFailure) {
+          if (state is AuthInitial ||
+              state is AuthFailure ||
+              state is UserFailure) {
             NavigationHelper.pushAndReplaceNamed(
               context: context,
-              destination: RegisterScreen.route,
+              destination: AuthScreen.route,
             );
           }
         },
@@ -44,6 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 user.role?.toLowerCase() == 'doctor' || user.isDoctor == true;
 
             return isDoctor ? const DoctorHomeScreen() : const UserHomeScreen();
+          }
+
+          if (state is UserFailure) {
+            return ErrorWidgetWithRetry(
+              errorMessage: state.failure.message,
+              onRetry: () => context.read<AuthBloc>().add(GetUserRequested()),
+            );
           }
 
           return const Center(child: CupertinoActivityIndicator());

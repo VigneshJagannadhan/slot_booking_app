@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
         } else {
           NavigationHelper.pushAndReplaceNamed(
             context: context,
-            destination: RegisterScreen.route,
+            destination: AuthScreen.route,
           );
         }
       });

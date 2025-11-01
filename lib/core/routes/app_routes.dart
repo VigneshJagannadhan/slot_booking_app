@@ -8,13 +8,13 @@ import 'package:slot_booking_app/features/home/presentation/screens/user_home_sc
 
 class AppRoutes {
   static getInitialRoute() {
-    return AppointmentsScreen.route;
+    return SplashScreen.route;
   }
 
   static final Map<String, Widget Function(BuildContext)> routes = {
     '/': (context) => const SplashScreen(),
     SplashScreen.route: (context) => const SplashScreen(),
-    RegisterScreen.route: (context) => const RegisterScreen(),
+    AuthScreen.route: (context) => const AuthScreen(),
     HomeScreen.route: (context) => const HomeScreen(),
     DoctorHomeScreen.route: (context) => const DoctorHomeScreen(),
     UserHomeScreen.route: (context) => const UserHomeScreen(),

@@ -9,7 +9,7 @@ import 'package:slot_booking_app/utils/app_enums.dart';
 class DoctorCard extends StatelessWidget {
   const DoctorCard({super.key, required this.doctor});
 
-  final Doctor doctor;
+  final DoctorEntity doctor;
   @override
   Widget build(BuildContext context) {
     return Container(

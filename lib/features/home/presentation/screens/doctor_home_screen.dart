@@ -66,7 +66,7 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
                       if (state is AuthInitial || state is AuthFailure) {
                         NavigationHelper.pushAndReplaceNamed(
                           context: context,
-                          destination: RegisterScreen.route,
+                          destination: AuthScreen.route,
                         );
                       }
                     },
