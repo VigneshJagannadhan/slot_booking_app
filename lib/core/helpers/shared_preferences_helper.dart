@@ -6,7 +6,7 @@ class SharedPreferencesHelper {
   static SharedPreferences? _preferences;
   static FlutterSecureStorage? _secureStorage;
 
-  /// INITIALIZR SHARED PREF MANAGER
+  /// INITIALIZE SHARED PREF MANAGER
   static Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
     _secureStorage = FlutterSecureStorage();

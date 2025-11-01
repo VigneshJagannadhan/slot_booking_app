@@ -27,7 +27,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
       body: GradientBackground(
         child: Column(
           children: [
-            /// APPBAR
             Container(
               margin: EdgeInsets.only(top: 70.h),
               child: Row(
@@ -84,10 +83,8 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
               ),
             ),
 
-            /// DASHBOARD
             DoctorDashboard(),
 
-            /// MANAGE BUTTONS
             Column(
               children: [
                 PrimaryButton(onPressed: () {}, label: 'Manage Appointments'),
@@ -97,7 +94,6 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
               ],
             ),
 
-            /// PLACEHOLDER FOR FUTURE FEATURES
             AppointmentsSection(),
           ],
         ),

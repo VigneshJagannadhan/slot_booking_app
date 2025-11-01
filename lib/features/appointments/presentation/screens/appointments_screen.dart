@@ -31,7 +31,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // SliverAppBar(),
           SliverToBoxAdapter(
             child: GradientBackground(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -40,7 +39,6 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 children: [
                   BlocConsumer<AppointmentBloc, AppointmentState>(
                     listener: (context, state) {
-                      /// SHOW SNACKBAR ON ERROR
                       if (state is AppointmentFailure) {
                         SnackbarHelper.showSnackbar(
                           context: context,
@@ -52,12 +50,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       }
                     },
                     builder: (context, state) {
-                      /// SHOW LOADING INDICATOR
                       if (state is AppointmentLoading) {
                         return Center(child: CupertinoActivityIndicator());
                       }
 
-                      /// SHOW ERROR WIDGET WITH RETRY BUTTON
                       if (state is AppointmentFailure) {
                         return ErrorWidgetWithRetry(
                           errorMessage: state.message,
@@ -69,17 +65,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         );
                       }
 
-                      /// SHOW EMPTY LIST HANDLER
                       if (state is AppointmentsLoaded) {
-                        // if (state.appointments.isEmpty) {
-                        //   return EmptyListHandler(
-                        //     isEmpty: true,
-                        //     emptyListMessage:
-                        //         'You do not have any appointments scheduled for today',
-                        //     child: const SizedBox.shrink(),
-                        //   );
-                        // }
-
                         return Expanded(
                           child: ListView.builder(
                             padding: EdgeInsets.only(bottom: 30.h, top: 30.h),

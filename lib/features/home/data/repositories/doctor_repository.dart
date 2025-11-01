@@ -1,4 +1,3 @@
-// lib/features/doctors/data/repositories/doctor_repository.dart
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:slot_booking_app/core/helpers/network_info_helper.dart';
