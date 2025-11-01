@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/network_helper.dart';
-import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_bloc.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_events.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/gradient_background.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/doctor_home_screen.dart';
-import 'package:slot_booking_app/features/home/presentation/widgets/empty_list_handler.dart';
 import 'package:slot_booking_app/features/home/presentation/widgets/error_widget_with_retry.dart';
 import 'package:slot_booking_app/utils/snackbar_helper.dart';
 

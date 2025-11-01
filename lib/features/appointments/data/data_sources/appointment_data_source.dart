@@ -41,7 +41,7 @@ class AppointmentDataSourceImpl extends AppointmentDataSource {
 
   @override
   Future<AppointmentDto> deleteAppointment({required String id}) async {
-    final response = await client.delete(AppUrls.appointments + "/$id");
+    final response = await client.delete("${AppUrls.appointments}/$id");
     return AppointmentDto.fromJson(response.data);
   }
 
