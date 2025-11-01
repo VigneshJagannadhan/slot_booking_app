@@ -2,6 +2,10 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:slot_booking_app/features/appointments/data/data_sources/appointment_data_source.dart';
+import 'package:slot_booking_app/features/appointments/domain/repositories/appintment_repository.dart';
+import 'package:slot_booking_app/features/appointments/domain/usecases/appointment_usecase.dart';
+import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_bloc.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:slot_booking_app/features/auth/data/data_sources/auth_data_sources.dart';
 import 'package:slot_booking_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -19,7 +23,9 @@ import 'package:slot_booking_app/features/home/presentation/bloc/doctor_bloc.dar
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // External dependencies
+  ///-------------------------------------------------------------------///
+  ///                           EXTERNAL                                ///
+  ///-------------------------------------------------------------------///
   sl.registerLazySingleton<Dio>(
     () => Dio(
       BaseOptions(
@@ -30,19 +36,29 @@ Future<void> initDependencies() async {
     ),
   );
 
+  ///-------------------------------------------------------------------///
+  ///                           CONNECTIVITY                            ///
+  ///-------------------------------------------------------------------///
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
 
-  // Network info
+  ///-------------------------------------------------------------------///
+  ///                           NETWORK INFO                            ///
+  ///-------------------------------------------------------------------///
   sl.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(sl<Connectivity>()),
   );
 
-  // API Client
+  ///-------------------------------------------------------------------///
+  ///                           API CLIENT                              ///
+  ///-------------------------------------------------------------------///
   sl.registerLazySingleton<ApiClient>(
     () => ApiClient(dotenv.env['BASE_URL'] ?? 'http://localhost:8080/api/'),
   );
 
-  // Data sources
+  ///-------------------------------------------------------------------///
+  ///                           DATA SOURCES                            ///
+  ///-------------------------------------------------------------------///
+
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(sl<ApiClient>()),
   );
@@ -51,7 +67,13 @@ Future<void> initDependencies() async {
     () => DoctorRemoteDataSourceImpl(sl<ApiClient>()),
   );
 
-  // Repository
+  sl.registerLazySingleton<AppointmentDataSource>(
+    () => AppointmentDataSourceImpl(sl<ApiClient>()),
+  );
+
+  ///-------------------------------------------------------------------///
+  ///                           REPOSITORIES                            ///
+  ///-------------------------------------------------------------------///
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       remote: sl<AuthRemoteDataSource>(),
@@ -66,7 +88,16 @@ Future<void> initDependencies() async {
     ),
   );
 
-  // Use cases
+  sl.registerLazySingleton<AppointmentRepository>(
+    () => AppointmentRepositoryImpl(
+      remote: sl<AppointmentDataSource>(),
+      networkInfo: sl<NetworkInfo>(),
+    ),
+  );
+
+  ///-------------------------------------------------------------------///
+  ///                           USECASES                                ///
+  ///-------------------------------------------------------------------///
   sl.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(sl<AuthRepository>()),
   );
@@ -83,7 +114,33 @@ Future<void> initDependencies() async {
     () => GetUserUseCase(repository: sl<AuthRepository>()),
   );
 
-  // Blocs
+  sl.registerLazySingleton<GetAppointmentUsecase>(
+    () => GetAppointmentUsecase(
+      appointmentRepository: sl<AppointmentRepository>(),
+    ),
+  );
+
+  sl.registerLazySingleton<CreateAppointmentUsecase>(
+    () => CreateAppointmentUsecase(
+      appointmentRepository: sl<AppointmentRepository>(),
+    ),
+  );
+
+  sl.registerLazySingleton<UpdateAppointmentUsecase>(
+    () => UpdateAppointmentUsecase(
+      appointmentRepository: sl<AppointmentRepository>(),
+    ),
+  );
+
+  sl.registerLazySingleton<DeleteAppointmentUsecase>(
+    () => DeleteAppointmentUsecase(
+      appointmentRepository: sl<AppointmentRepository>(),
+    ),
+  );
+
+  ///-------------------------------------------------------------------///
+  ///                           BLOCS                                   ///
+  ///-------------------------------------------------------------------///
   sl.registerFactory<AuthBloc>(
     () => AuthBloc(
       login: sl<LoginUseCase>(),
@@ -94,5 +151,14 @@ Future<void> initDependencies() async {
 
   sl.registerFactory<DoctorBloc>(
     () => DoctorBloc(getDoctorsUseCase: sl<GetDoctorsUseCase>()),
+  );
+
+  sl.registerFactory<AppointmentBloc>(
+    () => AppointmentBloc(
+      appointmentUsecase: sl<GetAppointmentUsecase>(),
+      createAppointmentUsecase: sl<CreateAppointmentUsecase>(),
+      updateAppointmentUsecase: sl<UpdateAppointmentUsecase>(),
+      deleteAppointmentUsecase: sl<DeleteAppointmentUsecase>(),
+    ),
   );
 }

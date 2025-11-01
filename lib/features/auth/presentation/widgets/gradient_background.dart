@@ -8,11 +8,13 @@ class GradientBackground extends StatelessWidget {
     required this.child,
     this.gradients,
     this.padding,
+    this.addSpaceAtTop = false,
   });
 
   final Widget child;
   final List<Color>? gradients;
   final EdgeInsetsGeometry? padding;
+  final bool addSpaceAtTop;
 
   @override
   Widget build(BuildContext context) {

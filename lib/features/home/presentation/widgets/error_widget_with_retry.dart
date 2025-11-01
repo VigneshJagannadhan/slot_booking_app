@@ -17,21 +17,19 @@ class ErrorWidgetWithRetry extends StatelessWidget {
   final VoidCallback onRetry;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 1.sh,
-      width: 1.sw,
+    return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(AppConstants.failedLottie, repeat: false),
           SizedBox(height: 16.h),
-          Text('Something went wrong', style: AppStyles.ts16C000W500),
+          Text('Something went wrong', style: AppStyles.ts16CFFFFFFW500),
           SizedBox(height: 8.h),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 40.w),
             child: Text(
               NetworkHelper.handleNetworkErrMsg(errorMessage),
-              style: AppStyles.ts12C000W400,
+              style: AppStyles.ts12CFFFFFFW400,
               textAlign: TextAlign.center,
             ),
           ),

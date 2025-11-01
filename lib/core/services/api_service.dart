@@ -38,13 +38,40 @@ class ApiClient {
     Options? options,
     CancelToken? cancelToken,
   }) async {
+    final token = await SharedPreferencesHelper.getUserToken();
     return _dio.post<T>(
       path,
       data: data,
-      options: options,
+      options: Options(headers: {"Authorization": token}),
       cancelToken: cancelToken,
     );
   }
 
-  // Add put, delete as needed
+  Future<Response<T>> put<T>(
+    String path, {
+    data,
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    final token = await SharedPreferencesHelper.getUserToken();
+    return _dio.put<T>(
+      path,
+      data: data,
+      options: Options(headers: {"Authorization": token}),
+      cancelToken: cancelToken,
+    );
+  }
+
+  Future<Response<T>> delete<T>(
+    String path, {
+    Options? options,
+    CancelToken? cancelToken,
+  }) async {
+    final token = await SharedPreferencesHelper.getUserToken();
+    return _dio.delete<T>(
+      path,
+      options: Options(headers: {"Authorization": token}),
+      cancelToken: cancelToken,
+    );
+  }
 }
