@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
+import 'package:slot_booking_app/core/themes/app_colors.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_bloc.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_events.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_state.dart';
@@ -34,8 +35,17 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       body: GradientBackground(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: CustomAppbar(title: 'Upcoming Appointments'),
+            SliverAppBar(
+              backgroundColor: Colors.transparent,
+              leading: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 16.sp,
+              ),
+              title: Text(
+                'Upcoming Appointments',
+                style: AppStyles.ts16CFFFFFFW600,
+              ),
             ),
             SliverToBoxAdapter(
               child: BlocConsumer<AppointmentBloc, AppointmentState>(
@@ -63,18 +73,20 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                   }
 
                   if (state is AppointmentsLoaded) {
-                    if (state.appointments.isEmpty) {
-                      return EmptyListHandler(
-                        isEmpty: true,
-                        emptyListMessage: "No appointments found.",
-                        child: SizedBox.shrink(),
-                      );
-                    }
+                    // if (state.appointments.isEmpty) {
+                    //   return EmptyListHandler(
+                    //     isEmpty: true,
+                    //     emptyListMessage: "No appointments found.",
+                    //     child: SizedBox.shrink(),
+                    //   );
+                    // }
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.only(bottom: 30.h, top: 30.h),
-                      itemCount: state.appointments.length,
+                      itemCount:
+                          state.appointments.isNotEmpty
+                              ? state.appointments.length
+                              : 10,
                       itemBuilder: (context, index) => AppointmentItem(),
                     );
                   }
