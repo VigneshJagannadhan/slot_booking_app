@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:slot_booking_app/core/helpers/app_lifecycle_helper.dart';
 import 'package:slot_booking_app/core/routes/app_routes.dart';
 import 'package:slot_booking_app/core/helpers/shared_preferences_helper.dart';
 import 'package:slot_booking_app/utils/app_blocs.dart';
@@ -12,6 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await SharedPreferencesHelper.init();
+  AppLifecycleObserver().init();
   await initDependencies();
   runApp(const MyApp());
 }
