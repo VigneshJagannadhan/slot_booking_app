@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
+import 'package:slot_booking_app/features/appointments/presentation/screens/appointments_screen.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:slot_booking_app/features/auth/presentation/bloc/auth_state.dart';
@@ -87,7 +88,15 @@ class _DoctorHomeScreenState extends State<DoctorHomeScreen> {
 
             Column(
               children: [
-                PrimaryButton(onPressed: () {}, label: 'Manage Appointments'),
+                PrimaryButton(
+                  onPressed: () {
+                    NavigationHelper.pushNamed(
+                      context: context,
+                      destination: AppointmentsScreen.route,
+                    );
+                  },
+                  label: 'Manage Appointments',
+                ),
                 SizedBox(height: 10.h),
                 PrimaryButton(onPressed: () {}, label: 'Set Available Slots'),
                 SizedBox(height: 20.h),

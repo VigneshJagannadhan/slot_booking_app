@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:slot_booking_app/core/helpers/navigation_helper.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_bloc.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_events.dart';
 import 'package:slot_booking_app/features/appointments/presentation/blocs/appointment_state.dart';
 import 'package:slot_booking_app/features/auth/presentation/widgets/gradient_background.dart';
+import 'package:slot_booking_app/core/themes/app_styles.dart';
 import 'package:slot_booking_app/features/home/presentation/screens/doctor_home_screen.dart';
+import 'package:slot_booking_app/features/home/presentation/widgets/empty_list_handler.dart';
 import 'package:slot_booking_app/features/home/presentation/widgets/error_widget_with_retry.dart';
 import 'package:slot_booking_app/utils/snackbar_helper.dart';
 
@@ -28,59 +31,87 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: GradientBackground(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              addSpaceAtTop: true,
-              child: Column(
-                children: [
-                  BlocConsumer<AppointmentBloc, AppointmentState>(
-                    listener: (context, state) {
-                      if (state is AppointmentFailure) {
-                        SnackbarHelper.showSnackbar(
-                          context: context,
-                          message: state.message,
-                          isError: true,
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AppointmentLoading) {
-                        return Center(child: CupertinoActivityIndicator());
-                      }
+      body: GradientBackground(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: CustomAppbar(title: 'Upcoming Appointments'),
+            ),
+            SliverToBoxAdapter(
+              child: BlocConsumer<AppointmentBloc, AppointmentState>(
+                listener: (context, state) {
+                  if (state is AppointmentFailure) {
+                    SnackbarHelper.showSnackbar(
+                      context: context,
+                      message: state.message,
+                      isError: true,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AppointmentLoading) {
+                    return Center(child: CupertinoActivityIndicator());
+                  }
 
-                      if (state is AppointmentFailure) {
-                        return ErrorWidgetWithRetry(
-                          errorMessage: state.message,
-                          onRetry: () {
-                            context.read<AppointmentBloc>().add(
-                              LoadAppointment(),
-                            );
-                          },
-                        );
-                      }
+                  if (state is AppointmentFailure) {
+                    return ErrorWidgetWithRetry(
+                      errorMessage: state.message,
+                      onRetry: () {
+                        context.read<AppointmentBloc>().add(LoadAppointment());
+                      },
+                    );
+                  }
 
-                      if (state is AppointmentsLoaded) {
-                        return Expanded(
-                          child: ListView.builder(
-                            padding: EdgeInsets.only(bottom: 30.h, top: 30.h),
-                            itemCount: 10,
-                            itemBuilder: (context, index) => AppointmentItem(),
-                          ),
-                        );
-                      }
+                  if (state is AppointmentsLoaded) {
+                    if (state.appointments.isEmpty) {
+                      return EmptyListHandler(
+                        isEmpty: true,
+                        emptyListMessage: "No appointments found.",
+                        child: SizedBox.shrink(),
+                      );
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: 30.h, top: 30.h),
+                      itemCount: state.appointments.length,
+                      itemBuilder: (context, index) => AppointmentItem(),
+                    );
+                  }
 
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ],
+                  return const SizedBox.shrink();
+                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class CustomAppbar extends StatelessWidget {
+  const CustomAppbar({super.key, required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 50.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              onPressed: () => NavigationHelper.pop(context),
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 16.r),
+            ),
+            Text(title, style: AppStyles.ts16CFFFFFFW600),
+          ],
+        ),
+        SizedBox(height: 20.h),
+      ],
     );
   }
 }

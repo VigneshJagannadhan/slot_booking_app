@@ -26,7 +26,10 @@ class EmptyListHandler extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Lottie.asset(AppConstants.emptyLottie),
+                SizedBox(
+                  height: 200.h,
+                  child: Lottie.asset(AppConstants.emptyLottie),
+                ),
                 SizedBox(height: 10.h),
                 Text(
                   emptyListMessage,
